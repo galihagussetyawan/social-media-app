@@ -1,37 +1,34 @@
 <script defer>
-  import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-  import { auth } from "../config/firebase";
+  import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
-
-  currentUser.subscribe((value) => {
-    if (value) window.location.href = "/";
-  });
+  import {
+    handleSignWithGoogleAccount,
+    handleLogout,
+  } from "../services/auth.service";
+  import { onDestroy } from "svelte";
 
   let MainLayout;
+  $: isChecking = true;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
   );
 
-  const handleSignWithGoogleAccount = () => {
-    const provider = new GoogleAuthProvider();
+  const unsubscribe = currentUser.subscribe((value) => {
+    if (value) {
+      navigate("/", { replace: true });
+    }
+    isChecking = false;
+  });
 
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-      });
-  };
+  onDestroy(unsubscribe);
 </script>
 
 <svelte:component this={MainLayout}>
-  <button on:click={handleSignWithGoogleAccount}>LOGIN</button>
+  {#if isChecking}
+    <span>loading...</span>
+  {:else}
+    <button on:click={handleSignWithGoogleAccount}>LOGIN</button>
+  {/if}
+  <button on:click={handleLogout}>Logout</button>
 </svelte:component>

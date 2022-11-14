@@ -1,7 +1,11 @@
 <script defer>
   import { navigate } from "svelte-navigator";
+  import { currentUser } from "../stores/auth.store";
 
+  let userData;
   let pathname = window.location.pathname;
+
+  currentUser.subscribe((value) => (userData = value));
 
   const handleNavigationButton = () => {
     if (pathname !== "/") {
@@ -67,9 +71,14 @@
       >{getCurrentPathname()}</span
     >
     <button
-      class="min-w-[40px] max-w-[40px] aspect-square rounded-2xl text-white bg-gray-300"
+      disabled={userData ? false : true}
+      class="min-w-[40px] max-w-[40px] overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
     >
-      😃
+      {#if userData?.photoURL}
+        <img src={userData?.photoURL} alt="profile" />
+      {:else}
+        😃
+      {/if}
     </button>
   </nav>
 </header>

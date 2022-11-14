@@ -1,4 +1,5 @@
 <script defer>
+  import SearchInput from "../components/search.component.svelte";
   let MainLayout;
 
   import("../layouts/main.layout.svelte").then(
@@ -7,5 +8,5 @@
 </script>
 
 <svelte:component this={MainLayout}>
-  <h1>Search Page</h1>
+  <SearchInput />
 </svelte:component>

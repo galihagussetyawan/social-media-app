@@ -18,10 +18,14 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser.set(user);
-    } else {
-        currentUser.set(null);
+currentUser.subscribe(value => {
+    if (!value) {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser.set(user);
+            } else {
+                currentUser.set(null);
+            }
+        });
     }
-});
+})
