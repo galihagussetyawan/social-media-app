@@ -1,20 +1,18 @@
 <script defer>
+  import { onDestroy } from "svelte";
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
-  import {
-    handleSignWithGoogleAccount,
-    handleLogout,
-  } from "../services/auth.service";
-  import { onDestroy } from "svelte";
+  import LoginForm from "../components/register/login-form.component.svelte";
 
-  let MainLayout;
+  let RegisterLayout;
   $: isChecking = true;
 
-  import("../layouts/main.layout.svelte").then(
-    (res) => (MainLayout = res.default)
+  import("../layouts/register.layout.svelte").then(
+    (res) => (RegisterLayout = res.default)
   );
 
   const unsubscribe = currentUser.subscribe((value) => {
+    console.log(value);
     if (value) {
       navigate("/", { replace: true });
     }
@@ -24,11 +22,10 @@
   onDestroy(unsubscribe);
 </script>
 
-<svelte:component this={MainLayout}>
+<svelte:component this={RegisterLayout}>
   {#if isChecking}
     <span>loading...</span>
   {:else}
-    <button on:click={handleSignWithGoogleAccount}>LOGIN</button>
+    <LoginForm />
   {/if}
-  <button on:click={handleLogout}>Logout</button>
 </svelte:component>

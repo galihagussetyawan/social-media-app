@@ -5,7 +5,7 @@
   let userData;
   let pathname = window.location.pathname;
 
-  currentUser.subscribe((value) => (userData = value));
+  currentUser?.subscribe((value) => (userData = value));
 
   const handleNavigationButton = () => {
     if (pathname !== "/") {
@@ -72,12 +72,27 @@
     >
     <button
       disabled={userData ? false : true}
-      class="min-w-[40px] max-w-[40px] overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
+      class="min-w-[40px] max-w-[40px] flex justify-center items-center overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
     >
       {#if userData?.photoURL}
         <img src={userData?.photoURL} alt="profile" />
       {:else}
-        😃
+        <i>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="3"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </i>
       {/if}
     </button>
   </nav>
