@@ -75,7 +75,7 @@
       class="min-w-[40px] max-w-[40px] flex justify-center items-center overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
     >
       {#if userData?.photoURL}
-        <img src={userData?.photoURL} alt="profile" />
+        <img src={userData.photoURL} alt="profile" />
       {:else}
         <i>
           <svg

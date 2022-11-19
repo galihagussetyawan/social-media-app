@@ -7,6 +7,10 @@
   );
 </script>
 
+<svelte:head>
+  <title>Search people</title>
+</svelte:head>
+
 <svelte:component this={MainLayout}>
   <SearchInput />
 </svelte:component>

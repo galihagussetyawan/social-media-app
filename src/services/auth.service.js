@@ -3,7 +3,6 @@ import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
 
 export const handleSignWithGoogleAccount = () => {
-    console.log('asdasd');
     const provider = new GoogleAuthProvider();
 
     signInWithPopup(auth, provider)
@@ -28,7 +27,6 @@ export const handleSignWithGoogleAccount = () => {
 };
 
 export const handleLogout = () => {
-    console.log('asdasd');
     signOut(auth)
         .then(res => console.log(res))
         .catch(err => console.log(err));

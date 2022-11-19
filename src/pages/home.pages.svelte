@@ -1,5 +1,4 @@
 <script defer>
-  import { currentGeolocation } from "../stores/geolocation.store";
   let Feed, MainLayout, Banner, StatusUpdate;
 
   import("../layouts/main.layout.svelte").then(
@@ -21,20 +20,7 @@
 </svelte:head>
 
 <svelte:component this={MainLayout}>
-  <!-- <span>Latitude {$geolocation?.latitude}</span>
-  <span>Longitude {$geolocation?.longitude}</span>
-  <span>Accuracy {$geolocation?.accuracy}</span> -->
   <svelte:component this={Banner} />
   <svelte:component this={StatusUpdate} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
-  <svelte:component this={Feed} />
   <svelte:component this={Feed} />
 </svelte:component>
