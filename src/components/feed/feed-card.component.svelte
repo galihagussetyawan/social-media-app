@@ -1,15 +1,11 @@
 <script defer>
-  import { getDoc } from "firebase/firestore";
-  import Reaction from "../reaction.component.svelte";
   import dayjs from "dayjs";
+  import Reaction from "../reaction.component.svelte";
   import relativeTime from "dayjs/plugin/relativeTime";
 
   dayjs.extend(relativeTime);
 
   export let data;
-  let user;
-
-  getDoc(data.userId).then((res) => (user = res.data()));
 </script>
 
 <div class=" min-h-[164px] relative mx-5 p-5 rounded-2xl mt-5 bg-white">
@@ -19,15 +15,15 @@
   <div class="flex justify-between">
     <div>
       <div class="flex gap-2">
-        {#if user?.photoURL}
+        {#if data?.publisher?.photoURL}
           <img
-            src={user?.photoURL}
+            src={data?.publisher?.photoURL}
             class="min-w-[45px] max-w-[45px] min-h-[45px] max-h-[45px] rounded-2xl bg-gray-100"
             alt="profile"
           />
         {/if}
         <div class="grid grid-cols-1">
-          <span class="uppercase">{user?.displayName}</span>
+          <span class="uppercase">{data?.publisher?.displayName}</span>
           <span class="text-[0.9rem] font-extralight"
             >{dayjs(Number(data.createdAt)).fromNow()}</span
           >
@@ -41,6 +37,6 @@
       />
     {/if}
   </div>
-  <Reaction />
+  <Reaction feedId={data?.id} />
   <div>Comment</div>
 </div>

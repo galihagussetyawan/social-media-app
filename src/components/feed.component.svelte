@@ -4,17 +4,14 @@
   import { feedsDatas } from "../stores/feed.store";
   import { getFeeds } from "../services/feed.service";
 
-  $: feedData = [];
+  let feedData = [];
 
-  $: {
-    onMount(async () => {
-      if (!$feedsDatas) {
-        feedsDatas.set(await getFeeds());
-      }
-
-      feedData = $feedsDatas;
-    });
-  }
+  onMount(async () => {
+    if (!$feedsDatas) {
+      feedsDatas.set(await getFeeds().then((res) => res));
+    }
+    feedData = $feedsDatas;
+  });
 </script>
 
 <div>
