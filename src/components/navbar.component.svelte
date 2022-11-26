@@ -2,26 +2,28 @@
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
 
-  let userData;
   let pathname = window.location.pathname;
+  let isShowModal = false;
 
-  currentUser?.subscribe((value) => (userData = value));
-
-  const handleNavigationButton = () => {
+  function handleNavigationButton() {
     if (pathname !== "/") {
       navigate(-1);
     } else {
       navigate("/search");
     }
-  };
+  }
 
-  const getCurrentPathname = () => {
+  function getCurrentPathname() {
     if (pathname === "/") {
       return "discover";
     } else {
       return pathname.replaceAll("/", " ");
     }
-  };
+  }
+
+  function handleShowModal() {
+    isShowModal = !isShowModal;
+  }
 </script>
 
 <header
@@ -71,29 +73,39 @@
       >{getCurrentPathname()}</span
     >
     <button
-      disabled={userData ? false : true}
+      disabled={$currentUser ? false : true}
       class="min-w-[40px] max-w-[40px] flex justify-center items-center overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
     >
-      {#if userData?.photoURL}
-        <img src={userData.photoURL} alt="profile" />
-      {:else}
-        <i>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="3"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </i>
-      {/if}
+      <button on:click={handleShowModal}>
+        {#if $currentUser?.photoURL}
+          <img src={$currentUser.photoURL} alt="profile" />
+        {:else}
+          <i>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="3"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </i>
+        {/if}
+      </button>
     </button>
   </nav>
 </header>
+
+{#if isShowModal}
+  <div
+    class=" w-full h-screen max-h-screen flex justify-center items-end fixed top-0 z-10 bg-opacity-50 bg-black"
+  >
+    <div class=" w-full h-40 mx-5 bg-gray-100">test</div>
+  </div>
+{/if}
