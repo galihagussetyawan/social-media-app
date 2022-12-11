@@ -2,6 +2,8 @@
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
 
+  import bottomModal from "../components/bottom-modal.component.svelte";
+
   let pathname = window.location.pathname;
   let isShowModal = false;
 
@@ -103,9 +105,7 @@
 </header>
 
 {#if isShowModal}
-  <div
-    class=" w-full h-screen max-h-screen flex justify-center items-end fixed top-0 z-10 bg-opacity-50 bg-black"
-  >
-    <div class=" w-full h-40 mx-5 bg-gray-100">test</div>
-  </div>
+  <svelte:component this={bottomModal}>
+    <h1>jancok</h1>
+  </svelte:component>
 {/if}

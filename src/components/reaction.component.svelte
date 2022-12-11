@@ -36,7 +36,7 @@
     }
   }
 
-  getFeedReactionByFeedId(feedId, $currentUser.uid).then((res) => {
+  getFeedReactionByFeedId(feedId, $currentUser?.uid).then((res) => {
     reactionData = res;
   });
 </script>
