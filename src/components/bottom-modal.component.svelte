@@ -20,7 +20,7 @@
 >
   <div
     bind:this={inner}
-    class="w-full md:max-w-sm h-40 rounded-t-2xl p-5 bg-gray-100"
+    class="w-full md:max-w-sm rounded-t-2xl px-5 py-10 bg-gray-100"
   >
     <slot />
   </div>

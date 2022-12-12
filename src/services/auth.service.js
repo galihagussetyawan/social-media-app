@@ -27,9 +27,7 @@ export const handleSignWithGoogleAccount = () => {
 };
 
 export const handleLogout = () => {
-    signOut(auth)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+    signOut(auth);
 }
 
 export default {

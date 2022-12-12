@@ -1,8 +1,5 @@
 <script defer>
-  import {
-    handleSignWithGoogleAccount,
-    handleLogout,
-  } from "../../services/auth.service";
+  import { handleSignWithGoogleAccount } from "../../services/auth.service";
 </script>
 
 <div class="w-full px-5 space-y-10">
@@ -53,5 +50,4 @@
       <span class="mx-2">Sign in with Google</span>
     </button>
   </div>
-  <button on:click={handleLogout}>Logout</button>
 </div>
