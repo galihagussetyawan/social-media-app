@@ -1,6 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
+import {currentUser} from "../stores/auth.store";
 
 export const handleSignWithGoogleAccount = () => {
     const provider = new GoogleAuthProvider();
@@ -28,6 +29,7 @@ export const handleSignWithGoogleAccount = () => {
 
 export const handleLogout = () => {
     signOut(auth);
+    currentUser.set(null);
 }
 
 export default {
