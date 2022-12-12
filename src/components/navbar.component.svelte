@@ -1,11 +1,10 @@
 <script defer>
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
-
-  import bottomModal from "../components/bottom-modal.component.svelte";
+  import { isShowModal } from "../stores/global.store";
+  import SlotBottomModal from "./navbar/slot-bottom-modal.component.svelte";
 
   let pathname = window.location.pathname;
-  let isShowModal = false;
 
   function handleNavigationButton() {
     if (pathname !== "/") {
@@ -24,7 +23,7 @@
   }
 
   function handleShowModal() {
-    isShowModal = !isShowModal;
+    $isShowModal = !$isShowModal;
   }
 </script>
 
@@ -104,8 +103,6 @@
   </nav>
 </header>
 
-{#if isShowModal}
-  <svelte:component this={bottomModal}>
-    <h1>jancok</h1>
-  </svelte:component>
+{#if $isShowModal}
+  <SlotBottomModal on:close={() => ($isShowModal = false)} />
 {/if}
