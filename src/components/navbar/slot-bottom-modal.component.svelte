@@ -1,5 +1,5 @@
 <script defer>
-  import { navigate } from "svelte-navigator";
+  import { navigate, Link } from "svelte-navigator";
   import BottomModal from "../bottom-modal.component.svelte";
   import { currentUser } from "../../stores/auth.store";
   import { handleLogout } from "../../services/auth.service";
@@ -31,7 +31,7 @@
     </button>
   {:else}
     <div class="space-y-5">
-      <button class="flex items-center gap-2 font-semibold">
+      <Link to="/profile" class="flex items-center gap-2 font-semibold">
         <i>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
           </svg>
         </i>
         <span>Profile</span>
-      </button>
+      </Link>
       <button class="flex items-center gap-2 font-semibold">
         <i>
           <svg

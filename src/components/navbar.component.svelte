@@ -1,10 +1,13 @@
 <script defer>
+  import { onMount } from "svelte";
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
   import { isShowModal } from "../stores/global.store";
   import SlotBottomModal from "./navbar/slot-bottom-modal.component.svelte";
 
   let pathname = window.location.pathname;
+
+  onMount(() => ($isShowModal = false));
 
   function handleNavigationButton() {
     if (pathname !== "/") {

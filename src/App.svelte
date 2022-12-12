@@ -11,11 +11,12 @@
     (res) => (Register = res.default)
   );
   import("./pages/profile.pages.svelte").then((res) => (Profile = res.default));
+  import ProtectedRoute from "./routes/protected-route.svelte";
 </script>
 
 <Router>
   <Route path={"/"} component={Home} />
   <Route path={"/search"} component={Search} />
   <Route path={"/register"} component={Register} />
-  <Route path={"/profile"} component={Profile} />
+  <ProtectedRoute path={"/profile"} component={Profile} />
 </Router>
