@@ -21,6 +21,7 @@
     if (pathname === "/") {
       return "discover";
     } else {
+      if (pathname.startsWith("/profile")) return $currentUser?.displayName;
       return pathname.replaceAll("/", " ");
     }
   }
@@ -73,7 +74,7 @@
       </i>
     </button>
     <span
-      class="min-h-[40px] max-h-[40px] w-40 flex justify-center items-center text-center rounded-2xl font-bold capitalize text-white bg-gray-300"
+      class="min-h-[40px] max-h-[40px] w-1/2 flex justify-center items-center text-center rounded-2xl font-bold capitalize text-white bg-gray-300"
       >{getCurrentPathname()}</span
     >
     <button
@@ -81,26 +82,22 @@
       class="min-w-[40px] max-w-[40px] flex justify-center items-center overflow-clip aspect-square rounded-2xl text-white bg-gray-300"
     >
       <button on:click={handleShowModal}>
-        {#if $currentUser?.photoURL}
-          <img src={$currentUser.photoURL} alt="profile" />
-        {:else}
-          <i>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="3"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </i>
-        {/if}
+        <i>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="3"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </i>
       </button>
     </button>
   </nav>
