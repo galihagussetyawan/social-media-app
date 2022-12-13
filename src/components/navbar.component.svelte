@@ -2,27 +2,18 @@
   import { onMount } from "svelte";
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
-  import { isShowModal } from "../stores/global.store";
+  import { isShowModal, pathname } from "../stores/global.store";
   import SlotBottomModal from "./navbar/slot-bottom-modal.component.svelte";
 
-  let pathname = window.location.pathname;
+  // let currentPathname = window.location.pathname;
 
   onMount(() => ($isShowModal = false));
 
   function handleNavigationButton() {
-    if (pathname !== "/") {
+    if ($pathname !== "Discover") {
       navigate(-1);
     } else {
       navigate("/search");
-    }
-  }
-
-  function getCurrentPathname() {
-    if (pathname === "/") {
-      return "discover";
-    } else {
-      if (pathname.startsWith("/profile")) return $currentUser?.displayName;
-      return pathname.replaceAll("/", " ");
     }
   }
 
@@ -40,7 +31,7 @@
       on:click={handleNavigationButton}
     >
       <i>
-        {#if pathname !== "/"}
+        {#if $pathname !== "Discover"}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -75,7 +66,7 @@
     </button>
     <span
       class="min-h-[40px] max-h-[40px] w-1/2 flex justify-center items-center text-center rounded-2xl font-bold capitalize text-white bg-gray-300"
-      >{getCurrentPathname()}</span
+      >{$pathname}</span
     >
     <button
       disabled={$currentUser ? false : true}

@@ -1,3 +1,9 @@
+<script defer>
+  import { pathname } from "../stores/global.store";
+
+  pathname.set("Search");
+</script>
+
 <div class="mx-5 py-2">
   <input
     placeholder="Find people"

@@ -1,4 +1,5 @@
 <script defer>
+  import { pathname } from "../stores/global.store";
   let Feed, MainLayout, Banner, StatusUpdate;
 
   import("../layouts/main.layout.svelte").then(
@@ -13,6 +14,8 @@
   import("../components/status-update.component.svelte").then(
     (res) => (StatusUpdate = res.default)
   );
+
+  pathname.set("Discover");
 </script>
 
 <svelte:head>
