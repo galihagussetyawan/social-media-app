@@ -22,7 +22,7 @@
       <p>
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, qui?
       </p>
-      <span class="font-semibold">Jatiprahu, Indonesia</span>
+      <span class="font-semibold italic">Jatiprahu, Indonesia</span>
     </div>
     <div class="flex justify-center gap-14 mt-5 mx-5 p-3 rounded-2xl bg-white">
       <div class="grid grid-cols-1 text-center">
