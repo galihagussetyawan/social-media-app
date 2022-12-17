@@ -41,7 +41,7 @@
   });
 </script>
 
-<div class="mt-5">
+<div>
   <span class=" text-gray-400">{reactionData?.count} reactions</span>
   <div class="grid grid-cols-7 gap-1">
     <button

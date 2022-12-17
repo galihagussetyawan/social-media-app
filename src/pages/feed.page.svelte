@@ -4,6 +4,7 @@
   import { getFeedById } from "../services/feed.service";
   import { useParams } from "svelte-navigator";
   import { feedsDatas } from "../stores/feed.store";
+  import FeedCard from "../components/feed/feed-card.component.svelte";
 
   let MainLayout;
   let isLoading = true;
@@ -34,6 +35,6 @@
   {#if isLoading}
     <div>Loading...</div>
   {:else}
-    <div>{feedDetail?.user?.displayName}</div>
+    <FeedCard data={feedDetail} />
   {/if}
 </svelte:component>

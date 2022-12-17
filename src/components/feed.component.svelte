@@ -12,6 +12,7 @@
     where,
   } from "firebase/firestore";
   import { db } from "../config/firebase";
+  import FeedCardSkeleton from "./skeleton/feed-card-skeleton.component.svelte";
 
   onMount(async () => {
     currentGeolocation.subscribe(async (geoValue) => {
@@ -61,7 +62,10 @@
 
 <div>
   {#if !$feedsDatas}
-    <span>Loading...</span>
+    <div>
+      <FeedCardSkeleton />
+      <FeedCardSkeleton />
+    </div>
   {:else}
     {#each $feedsDatas as feed}
       <FeedCard data={feed} />

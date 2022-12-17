@@ -1,7 +1,7 @@
 <script defer>
   import { Router, Route } from "svelte-navigator";
 
-  let Home, Search, Register, Profile, Feed;
+  let Home, Search, Register, Profile, Feed, ProtectedRoute;
 
   import("./pages/home.pages.svelte").then((result) => (Home = result.default));
   import("./pages/search.page.svelte").then(
@@ -12,7 +12,9 @@
   );
   import("./pages/profile.pages.svelte").then((res) => (Profile = res.default));
   import("./pages/feed.page.svelte").then((res) => (Feed = res.default));
-  import ProtectedRoute from "./routes/protected-route.svelte";
+  import("./routes/protected-route.svelte").then(
+    (res) => (ProtectedRoute = res.default)
+  );
 </script>
 
 <Router>
@@ -20,5 +22,7 @@
   <Route path={"/search"} component={Search} />
   <Route path={"/register"} component={Register} />
   <Route path={"/status/:feedid"} component={Feed} />
-  <ProtectedRoute path={"/profile"} component={Profile} />
+  <svelte:component this={ProtectedRoute} path={"/profile"}>
+    <svelte:component this={Profile} />
+  </svelte:component>
 </Router>
