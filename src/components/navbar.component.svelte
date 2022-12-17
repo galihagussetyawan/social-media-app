@@ -5,8 +5,6 @@
   import { isShowModal, pathname } from "../stores/global.store";
   import SlotBottomModal from "./navbar/slot-bottom-modal.component.svelte";
 
-  // let currentPathname = window.location.pathname;
-
   onMount(() => ($isShowModal = false));
 
   function handleNavigationButton() {

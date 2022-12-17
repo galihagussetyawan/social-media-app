@@ -6,6 +6,7 @@
   import {
     collection,
     GeoPoint,
+    getDoc,
     getDocs,
     query,
     where,
@@ -36,12 +37,22 @@
               where("location", "<=", greaterGeopoint)
             )
           );
-          const result = await feedSnap.docs.map((docSnap) => ({
-            id: docSnap.id,
-            ...docSnap.data(),
-          }));
 
-          feedsDatas.set(result);
+          async function feedResult() {
+            return await Promise.all(
+              feedSnap.docs.map(async (docSnap) => {
+                const userSnap = await getDoc(docSnap.data().userId);
+                return {
+                  id: docSnap.id,
+                  ...docSnap.data(),
+                  user: await userSnap.data(),
+                };
+              })
+            );
+          }
+
+          console.log(await feedResult());
+          feedsDatas.set(await feedResult());
         }
       }
     });

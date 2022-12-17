@@ -19,6 +19,6 @@
   <Route path={"/"} component={Home} />
   <Route path={"/search"} component={Search} />
   <Route path={"/register"} component={Register} />
-  <Route path={"/status/:feed"} component={Feed} />
+  <Route path={"/status/:feedid"} component={Feed} />
   <ProtectedRoute path={"/profile"} component={Profile} />
 </Router>

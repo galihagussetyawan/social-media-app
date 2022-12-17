@@ -1,7 +1,6 @@
 import { currentUser } from "../stores/auth.store";
 import { currentGeolocation } from '../stores/geolocation.store';
-import { deleteDoc, GeoPoint, updateDoc } from "firebase/firestore";
-import { addDoc, collection, doc, getCountFromServer, getDocs } from 'firebase/firestore'
+import { addDoc, collection, doc, getCountFromServer, getDocs, deleteDoc, GeoPoint, updateDoc, getDoc } from 'firebase/firestore'
 import { db } from "../config/firebase";
 import { navigate } from "svelte-navigator";
 
@@ -20,6 +19,19 @@ export async function postFeed(statusText) {
             createdAt: Date.now().toString(),
             updatedAt: Date.now().toString(),
         })
+    }
+}
+
+export async function getFeedById(feedId) {
+    
+    const feedSnap = await getDoc(doc(db, 'feeds', feedId
+    ));
+    const userSnap = await getDoc(await feedSnap.data().userId);
+
+    return {
+        feed: await feedSnap.data(),
+        user: await userSnap.data(),
+        reactions: await getFeedReactionByFeedId(feedId, await userSnap.id)
     }
 }
 

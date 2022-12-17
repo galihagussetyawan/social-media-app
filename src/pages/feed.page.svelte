@@ -1,11 +1,39 @@
 <script defer>
+  import { onMount } from "svelte";
+  import { pathname } from "../stores/global.store";
+  import { getFeedById } from "../services/feed.service";
+  import { useParams } from "svelte-navigator";
+  import { feedsDatas } from "../stores/feed.store";
+
   let MainLayout;
+  let isLoading = true;
+  let feedDetail;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
   );
+
+  const params = useParams();
+
+  onMount(() => {
+    if ($feedsDatas?.some((data) => data.id.includes($params.feedid))) {
+      feedDetail = $feedsDatas.find((data) => data.id === $params.feedid);
+      isLoading = false;
+    } else {
+      getFeedById($params.feedid).then((res) => {
+        feedDetail = res;
+        isLoading = false;
+      });
+    }
+  });
+
+  pathname.set("Status");
 </script>
 
 <svelte:component this={MainLayout}>
-  <div>feed</div>
+  {#if isLoading}
+    <div>Loading...</div>
+  {:else}
+    <div>{feedDetail?.user?.displayName}</div>
+  {/if}
 </svelte:component>

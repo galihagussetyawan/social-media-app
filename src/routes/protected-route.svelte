@@ -4,16 +4,13 @@
   import { currentUser } from "../stores/auth.store";
 
   let isLoading = true;
-  let isAuth = false;
   export let path;
   export let component;
 
-  onMount(() => {
-    currentUser.subscribe(async (value) => {
-      setTimeout(() => {
-        isLoading = false;
-      }, 3000);
-    });
+  currentUser.subscribe(async (value) => {
+    setTimeout(() => {
+      isLoading = false;
+    }, 3000);
   });
 </script>
 
@@ -22,7 +19,7 @@
     Loading.....
   </div>
 {:else if !$currentUser}
-  <div>Kosong</div>
+  <div>Login</div>
 {:else}
   <Route {path} {component} />
 {/if}
