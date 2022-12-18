@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import FeedCard from "./feed/feed-card.component.svelte";
   import { currentGeolocation } from "../stores/geolocation.store";
+  import { currentUser } from "../stores/auth.store";
   import { feedsDatas } from "../stores/feed.store";
   import {
     collection,
@@ -13,6 +14,7 @@
   } from "firebase/firestore";
   import { db } from "../config/firebase";
   import FeedCardSkeleton from "./skeleton/feed-card-skeleton.component.svelte";
+  import { getFeedReactionByFeedId } from "../services/feed.service";
 
   onMount(async () => {
     currentGeolocation.subscribe(async (geoValue) => {
@@ -47,12 +49,15 @@
                   id: docSnap.id,
                   ...docSnap.data(),
                   user: await userSnap.data(),
+                  reactions: await getFeedReactionByFeedId(
+                    docSnap?.id,
+                    $currentUser?.uid
+                  ),
                 };
               })
             );
           }
 
-          console.log(await feedResult());
           feedsDatas.set(await feedResult());
         }
       }
@@ -60,7 +65,7 @@
   });
 </script>
 
-<div>
+<div class="space-y-5 mt-5">
   {#if !$feedsDatas}
     <div>
       <FeedCardSkeleton />

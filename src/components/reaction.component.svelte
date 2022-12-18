@@ -2,59 +2,50 @@
   import {
     addReactionFeed,
     deleteReactionfeed,
-    getFeedReactionByFeedId,
     updateReactionFeed,
   } from "../services/feed.service";
-  import { currentUser } from "../stores/auth.store";
 
-  export let feedId;
-
-  let reactionData;
+  export let data;
 
   function handleAddReactionFeed(symbol) {
-    if (reactionData?.filterUserReaction) {
-      if (reactionData.filterUserReaction.symbol === symbol) {
-        deleteReactionfeed(feedId, reactionData?.filterUserReaction?.id);
-        reactionData.filterUserReaction = null;
-        reactionData.count = reactionData.count - 1;
+    if (data?.reactions?.filterUserReaction) {
+      if (data.reactions?.filterUserReaction?.symbol === symbol) {
+        deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
+        data.reactions.filterUserReaction = null;
+        data.reactions.count = data.count - 1;
       } else {
         updateReactionFeed(
-          feedId,
-          reactionData?.filterUserReaction?.id,
+          data?.id,
+          data?.reactions?.filterUserReaction?.id,
           symbol
         );
-        reactionData.filterUserReaction.symbol = symbol;
+        data.reactions.filterUserReaction.symbol = symbol;
       }
     } else {
-      addReactionFeed(feedId, symbol).then((res) => {
-        reactionData.filterUserReaction = {
+      addReactionFeed(data?.id, symbol).then((res) => {
+        data.reactions.filterUserReaction = {
           id: res,
           symbol: symbol,
         };
       });
-      reactionData.count = reactionData.count + 1;
+      data.reactions.count = data.reactions.count + 1;
     }
   }
-
-  getFeedReactionByFeedId(feedId, $currentUser?.uid).then((res) => {
-    reactionData = res;
-  });
 </script>
 
 <div>
-  <span class=" text-gray-400">{reactionData?.count} reactions</span>
+  <span class=" text-gray-400">{data?.reactions?.count} reactions</span>
   <div class="grid grid-cols-7 gap-1">
     <button
       class={` aspect-square rounded-2xl ${
-        reactionData?.filterUserReaction?.symbol === 1 &&
+        data?.reactions?.filterUserReaction?.symbol === 1 &&
         "border-2 border-green-400"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(1)}>😎</button
     >
     <button
       class={` aspect-square rounded-2xl ${
-        reactionData?.filterUserReaction?.symbol === 2 &&
-        "border-2 border-green-400"
+        data?.filterUserReaction?.symbol === 2 && "border-2 border-green-400"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(2)}>😬</button
     >

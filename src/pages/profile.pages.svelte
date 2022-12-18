@@ -10,6 +10,10 @@
   pathname.set($currentUser?.displayName);
 </script>
 
+<svelte:head>
+  <title>Profile</title>
+</svelte:head>
+
 <svelte:component this={MainLayout}>
   <div>
     <div class="w-20 h-20 m-auto rounded-2xl overflow-hidden bg-gray-300">
