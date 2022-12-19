@@ -12,7 +12,7 @@
       if (data.reactions?.filterUserReaction?.symbol === symbol) {
         deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
         data.reactions.filterUserReaction = null;
-        data.reactions.count = data.count - 1;
+        data.reactions.count = data?.reactions?.count - 1;
       } else {
         updateReactionFeed(
           data?.id,
