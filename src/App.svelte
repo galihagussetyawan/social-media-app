@@ -15,6 +15,7 @@
   import("./routes/protected-route.svelte").then(
     (res) => (ProtectedRoute = res.default)
   );
+  import UsernameProfile from "./pages/username-profile.page.svelte";
 </script>
 
 <Router>
@@ -22,6 +23,7 @@
   <Route path={"/search"} component={Search} />
   <Route path={"/register"} component={Register} />
   <Route path={"/status/:feedid"} component={Feed} />
+  <Route path={"/:username"} component={UsernameProfile} />
   <svelte:component this={ProtectedRoute} path={"/profile"}>
     <svelte:component this={Profile} />
   </svelte:component>
