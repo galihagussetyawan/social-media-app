@@ -15,8 +15,8 @@
     class="w-8 h-8 absolute -top-2 -right-2 rounded-full border-4 border-gray-100 outline-gray-100 bg-red-500"
   /> -->
   <div class="flex justify-between">
-    <div class=" w-full">
-      <div class="flex gap-2">
+    <div>
+      <Link to={`/${data?.user?.username}`} class="flex gap-2">
         {#if data?.user?.photoURL}
           <img
             src={data?.user?.photoURL}
@@ -30,10 +30,12 @@
             >{dayjs(Number(data.createdAt)).fromNow()}</span
           >
         </div>
-      </div>
+      </Link>
       {#if $location?.pathname === "/"}
         <Link to={`/status/${data?.id}`}>
-          <p class="py-5 leading-tight text-2xl">{data?.text}</p>
+          <p class="w-full py-5 leading-tight text-2xl">
+            {data?.text}
+          </p>
         </Link>
       {:else}
         <p class="py-5 leading-tight text-2xl">{data?.text}</p>

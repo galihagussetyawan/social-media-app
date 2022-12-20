@@ -3,9 +3,10 @@
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
   import LoginForm from "../components/register/login-form.component.svelte";
+  import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
 
   let RegisterLayout;
-  $: isChecking = true;
+  let isChecking = true;
 
   import("../layouts/register.layout.svelte").then(
     (res) => (RegisterLayout = res.default)
@@ -25,7 +26,7 @@
 
 <svelte:component this={RegisterLayout}>
   {#if isChecking}
-    <span>loading...</span>
+    <svelte:component this={LoadingCircle} />
   {:else}
     <LoginForm />
   {/if}
