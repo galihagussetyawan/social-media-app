@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { currentUser } from "../stores/auth.store";
 
@@ -20,9 +20,10 @@ export const auth = getAuth(app);
 
 currentUser.subscribe(value => {
     if (!value) {
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                currentUser.set(user);
+                const userSnap = await getDoc(doc(db, 'users', user.uid));
+                currentUser.set({...user, username: userSnap?.data()?.username});
             } else {
                 currentUser.set(null);
             }

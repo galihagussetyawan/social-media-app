@@ -19,7 +19,7 @@
     <div class="w-20 h-20 m-auto rounded-2xl overflow-hidden bg-gray-300">
       <img src={$currentUser?.photoURL} alt={$currentUser?.displayName} />
     </div>
-    <div class=" text-center">@username</div>
+    <div class=" text-center">@{$currentUser?.username}</div>
     <div
       class="grid grid-cols-1 space-y-2 text-center mt-2 mx-5 p-3 rounded-2xl bg-white"
     >
