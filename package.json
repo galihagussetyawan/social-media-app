@@ -21,6 +21,7 @@
     "dayjs": "^1.11.6",
     "firebase": "^9.14.0",
     "geolib": "^3.3.3",
-    "svelte-navigator": "^3.2.2"
+    "svelte-navigator": "^3.2.2",
+    "unique-username-generator": "^1.1.3"
   }
 }

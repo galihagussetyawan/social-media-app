@@ -9,7 +9,7 @@
 
   function handleAddReactionFeed(symbol) {
     if (data?.reactions?.filterUserReaction) {
-      if (data.reactions?.filterUserReaction?.symbol === symbol) {
+      if (data?.reactions?.filterUserReaction?.symbol === symbol) {
         deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
         data.reactions.filterUserReaction = null;
         data.reactions.count = data?.reactions?.count - 1;
