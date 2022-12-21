@@ -6,9 +6,9 @@
   import DescriptionInformation from "../components/profile/description-information.component.svelte";
   import CountInformation from "../components/profile/count-information.component.svelte";
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
-
   import { getUserByUsername } from "../services/user.service";
   import AccountInteraction from "../components/profile/account-interaction.component.svelte";
+  import { getProfileByUserId } from "../services/profile.service";
 
   let MainLayout;
   let data;
@@ -29,6 +29,8 @@
     isLoading = false;
   });
   $: pathname.set(data?.displayName);
+
+  // $: getProfileByUserId(data?.id).then(console.log);
 </script>
 
 <svelte:component this={MainLayout}>

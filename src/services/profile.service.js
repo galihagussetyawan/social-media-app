@@ -2,7 +2,7 @@ import { db } from "../config/firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { currentUser } from "../stores/auth.store";
 
-async function getProfileByUserId(userId) {
+export async function getProfileByUserId(userId) {
 
     try {
         const profileSnap = await getDocs(query(collection(db, 'users', userId, 'profile'), where('userId', '==', userId)));
@@ -13,7 +13,7 @@ async function getProfileByUserId(userId) {
     }
 }
 
-async function addProfile(bio, job, city) {
+export async function addProfile(bio, job, city) {
     currentUser.subscribe(async userValue => {
         if(userValue?.uid) {
             await addDoc(collection(db, 'users', userValue?.uid, 'profiles'), {
