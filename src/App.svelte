@@ -1,5 +1,6 @@
 <script defer>
   import { Router, Route } from "svelte-navigator";
+  import EditProfile from "./pages/edit-profile.page.svelte";
 
   let Home, Search, Register, Profile, Feed, ProtectedRoute;
 
@@ -26,5 +27,8 @@
   <Route path={"/:username"} component={UsernameProfile} />
   <svelte:component this={ProtectedRoute} path={"/profile"}>
     <svelte:component this={Profile} />
+  </svelte:component>
+  <svelte:component this={ProtectedRoute} path={"/profile/edit"}>
+    <svelte:component this={EditProfile} />
   </svelte:component>
 </Router>

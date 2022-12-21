@@ -1,12 +1,14 @@
 <script defer>
-  import { useParams } from "svelte-navigator";
+  import { useParams, Link } from "svelte-navigator";
 
   const params = useParams();
 </script>
 
 <div class=" flex justify-center px-5 space-x-3">
   {#if !$params.username}
-    <button class="p-2 px-8 rounded-2xl bg-gray-300">Edit Profile</button>
+    <Link to={"/profile/edit"} class="p-2 px-8 rounded-2xl bg-gray-300"
+      >Edit Profile</Link
+    >
   {:else}
     <button
       class="p-2 px-8 rounded-2xl text-white
