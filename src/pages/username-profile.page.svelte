@@ -8,6 +8,7 @@
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
 
   import { getUserByUsername } from "../services/user.service";
+  import AccountInteraction from "../components/profile/account-interaction.component.svelte";
 
   let MainLayout;
   let data;
@@ -34,13 +35,16 @@
   {#if isLoading}
     <svelte:component this={LoadingCircle} />
   {:else}
-    <svelte:component
-      this={ProfilePicture}
-      imageUrl={data?.photoURL}
-      imageAlt="asdasd"
-      username={data?.username}
-    />
-    <svelte:component this={DescriptionInformation} />
-    <svelte:component this={CountInformation} />
+    <div class=" space-y-5">
+      <svelte:component
+        this={ProfilePicture}
+        imageUrl={data?.photoURL}
+        imageAlt="asdasd"
+        username={data?.username}
+      />
+      <svelte:component this={DescriptionInformation} />
+      <svelte:component this={CountInformation} />
+      <svelte:component this={AccountInteraction} />
+    </div>
   {/if}
 </svelte:component>
