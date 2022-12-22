@@ -2,15 +2,15 @@
   import { navigate, useParams } from "svelte-navigator";
   import { pathname } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
-  import ProfilePicture from "../components/profile/profile-picture.component.svelte";
-  import DescriptionInformation from "../components/profile/description-information.component.svelte";
-  import CountInformation from "../components/profile/count-information.component.svelte";
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
   import { getUserByUsername } from "../services/user.service";
-  import AccountInteraction from "../components/profile/account-interaction.component.svelte";
   import { getProfileByUserId } from "../services/profile.service";
 
-  let MainLayout;
+  let MainLayout,
+    ProfilePicture,
+    DescriptionInformation,
+    CountInformation,
+    AccountInteraction;
   let data, profileData;
   let isLoading = true;
 
@@ -18,6 +18,22 @@
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
+  );
+
+  import("../components/profile/profile-picture.component.svelte").then(
+    (res) => (ProfilePicture = res.default)
+  );
+
+  import("../components/profile/description-information.component.svelte").then(
+    (res) => (DescriptionInformation = res.default)
+  );
+
+  import("../components/profile/count-information.component.svelte").then(
+    (res) => (CountInformation = res.default)
+  );
+
+  import("../components/profile/account-interaction.component.svelte").then(
+    (res) => (AccountInteraction = res.default)
   );
 
   $: if ($currentUser?.username === $params?.username) {
