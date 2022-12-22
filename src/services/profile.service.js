@@ -1,24 +1,45 @@
 import { db } from "../config/firebase";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { currentUser } from "../stores/auth.store";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
 export async function getProfileByUserId(userId) {
+  try {
+    const profileSnap = await getDocs(
+      query(
+        collection(db, "users", userId, "profiles"),
+        where("userId", "==", userId)
+      )
+    );
 
-    try {
-        const profileSnap = await getDocs(query(collection(db, 'users', userId, 'profile'), where('userId', '==', userId)));
-
-        return profileSnap.docs.map(docSnap => docSnap.data());
-    } catch (error) {
-
-    }
+    return profileSnap.docs.map((docSnap) => {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      };
+    })[0];
+  } catch (error) {}
 }
 
-export async function addProfile(bio, job, city) {
-    currentUser.subscribe(async userValue => {
-        if(userValue?.uid) {
-            await addDoc(collection(db, 'users', userValue?.uid, 'profiles'), {
-                bio, job, city
-            })
-        }
-    })
+export async function addProfile(userId, profession, city, bio) {
+  await addDoc(collection(db, "users", userId, "profiles"), {
+    userId,
+    profession,
+    city,
+    bio,
+  });
+}
+
+export async function updateProfile(id, userid, profession, city, bio) {
+  await updateDoc(doc(db, "users", userid, "profiles", id), {
+    profession,
+    city,
+    bio,
+  });
 }
