@@ -1,8 +1,14 @@
 <script defer>
   import { Router, Route } from "svelte-navigator";
-  import EditProfile from "./pages/edit-profile.page.svelte";
 
-  let Home, Search, Register, Profile, Feed, ProtectedRoute;
+  let Home,
+    Search,
+    Register,
+    Profile,
+    Feed,
+    ProtectedRoute,
+    UsernameProfile,
+    EditProfile;
 
   import("./pages/home.pages.svelte").then((result) => (Home = result.default));
   import("./pages/search.page.svelte").then(
@@ -16,7 +22,12 @@
   import("./routes/protected-route.svelte").then(
     (res) => (ProtectedRoute = res.default)
   );
-  import UsernameProfile from "./pages/username-profile.page.svelte";
+  import("./pages/username-profile.page.svelte").then(
+    (res) => (UsernameProfile = res.default)
+  );
+  import("./pages/edit-profile.page.svelte").then(
+    (res) => (EditProfile = res.default)
+  );
 </script>
 
 <Router>
