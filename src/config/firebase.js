@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { currentUser } from "../stores/auth.store";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAx2ymRIJhT8usXM6w1gsh7YjV3oNAgo20",
@@ -17,16 +16,3 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-
-currentUser.subscribe((value) => {
-  if (!value) {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userSnap = await getDoc(doc(db, "users", user.uid));
-        currentUser.set({ ...user, username: userSnap?.data()?.username });
-      } else {
-        currentUser.set(null);
-      }
-    });
-  }
-});
