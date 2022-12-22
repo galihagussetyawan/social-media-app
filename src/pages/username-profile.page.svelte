@@ -11,7 +11,7 @@
   import { getProfileByUserId } from "../services/profile.service";
 
   let MainLayout;
-  let data;
+  let data, profileData;
   let isLoading = true;
 
   const params = useParams();
@@ -24,13 +24,21 @@
     navigate("/profile", { replace: true });
   }
 
+  $: if (isLoading) {
+    pathname.set("...");
+  } else {
+    pathname.set(data?.displayName);
+  }
+
   $: getUserByUsername($params?.username).then((res) => {
     data = res;
-    isLoading = false;
   });
-  $: pathname.set(data?.displayName);
 
-  // $: getProfileByUserId(data?.id).then(console.log);
+  $: getProfileByUserId(data?.id).then((res) => (profileData = res));
+
+  $: if (data && profileData) {
+    isLoading = false;
+  }
 </script>
 
 <svelte:component this={MainLayout}>
@@ -44,7 +52,11 @@
         imageAlt="asdasd"
         username={data?.username}
       />
-      <svelte:component this={DescriptionInformation} />
+      <svelte:component
+        this={DescriptionInformation}
+        bio={profileData?.bio}
+        city={profileData?.city}
+      />
       <svelte:component this={CountInformation} />
       <svelte:component this={AccountInteraction} />
     </div>
