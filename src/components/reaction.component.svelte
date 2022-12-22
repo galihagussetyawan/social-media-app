@@ -6,31 +6,37 @@
   } from "../services/feed.service";
   import { currentGeolocation } from "../stores/geolocation.store";
   import { getDistance } from "geolib";
+  import { currentUser } from "../stores/auth.store";
+  import { navigate } from "svelte-navigator";
 
   export let data;
 
   function handleAddReactionFeed(symbol) {
-    if (data?.reactions?.filterUserReaction) {
-      if (data?.reactions?.filterUserReaction?.symbol === symbol) {
-        deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
-        data.reactions.filterUserReaction = null;
-        data.reactions.count = data?.reactions?.count - 1;
-      } else {
-        updateReactionFeed(
-          data?.id,
-          data?.reactions?.filterUserReaction?.id,
-          symbol
-        );
-        data.reactions.filterUserReaction.symbol = symbol;
-      }
+    if (!$currentUser) {
+      navigate("/register");
     } else {
-      addReactionFeed(data?.id, symbol).then((res) => {
-        data.reactions.filterUserReaction = {
-          id: res,
-          symbol: symbol,
-        };
-      });
-      data.reactions.count = data.reactions.count + 1;
+      if (data?.reactions?.filterUserReaction) {
+        if (data?.reactions?.filterUserReaction?.symbol === symbol) {
+          deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
+          data.reactions.filterUserReaction = null;
+          data.reactions.count = data?.reactions?.count - 1;
+        } else {
+          updateReactionFeed(
+            data?.id,
+            data?.reactions?.filterUserReaction?.id,
+            symbol
+          );
+          data.reactions.filterUserReaction.symbol = symbol;
+        }
+      } else {
+        addReactionFeed(data?.id, $currentUser?.uid, symbol).then((res) => {
+          data.reactions.filterUserReaction = {
+            id: res,
+            symbol: symbol,
+          };
+        });
+        data.reactions.count = data.reactions.count + 1;
+      }
     }
   }
 </script>
