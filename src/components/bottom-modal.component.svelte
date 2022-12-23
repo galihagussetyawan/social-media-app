@@ -15,12 +15,12 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-  class=" w-full h-screen max-h-screen flex justify-center items-end fixed top-0 z-10 bg-opacity-50 bg-black"
+  class=" w-full h-screen max-h-screen flex justify-center fixed top-0 z-10 bg-opacity-50 bg-black"
   on:click={handleClickOutside}
 >
   <div
     bind:this={inner}
-    class="w-full md:max-w-sm rounded-t-2xl px-5 py-10 bg-gray-100"
+    class="w-full md:max-w-sm fixed bottom-0 rounded-t-2xl px-5 py-10 bg-gray-100"
   >
     <slot />
   </div>
