@@ -20,8 +20,14 @@
 >
   <div
     bind:this={inner}
-    class="w-full md:max-w-sm fixed bottom-0 rounded-t-2xl px-5 py-10 bg-gray-100"
+    class="w-full md:max-w-sm space-y-10 fixed bottom-0 rounded-t-2xl px-5 py-10 bg-gray-100"
   >
+    <div class="flex justify-center">
+      <button
+        class=" w-1/4 h-2 rounded-2xl bg-gray-300"
+        on:click={() => isShowModal.set(false)}
+      />
+    </div>
     <slot />
   </div>
 </div>
