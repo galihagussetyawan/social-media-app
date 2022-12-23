@@ -1,5 +1,7 @@
 <script defer>
+  import { onMount } from "svelte";
   import { Router, Route } from "svelte-navigator";
+  import { detectedMobileDevice } from "./lib/detected-mobile.lib";
 
   let Home,
     Search,

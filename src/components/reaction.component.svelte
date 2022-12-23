@@ -75,15 +75,16 @@
   </div>
   <div class="grid grid-cols-7 gap-1">
     <button
-      class={` aspect-square rounded-2xl ${
+      class={`aspect-square rounded-2xl ${
         data?.reactions?.filterUserReaction?.symbol === 1 &&
-        "border-2 border-green-400"
+        "border-2 bg-green-200 border-[#01DC14]"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(1)}>😎</button
     >
     <button
       class={` aspect-square rounded-2xl ${
-        data?.filterUserReaction?.symbol === 2 && "border-2 border-green-400"
+        data?.reactions?.filterUserReaction?.symbol === 2 &&
+        "border-2 bg-green-200 border-[#01DC14]"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(2)}>😬</button
     >

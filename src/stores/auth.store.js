@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 import { auth, db } from "../config/firebase";
 
 export const currentUser = writable();
+export const profileData = writable();
 
 currentUser.subscribe((valueUser) => {
   if (!valueUser) {

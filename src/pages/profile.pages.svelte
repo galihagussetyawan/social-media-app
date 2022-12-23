@@ -1,5 +1,5 @@
 <script defer>
-  import { currentUser } from "../stores/auth.store";
+  import { currentUser, profileData } from "../stores/auth.store";
   import { pathname } from "../stores/global.store";
   import { getProfileByUserId } from "../services/profile.service";
 
@@ -8,7 +8,7 @@
     DescriptionInformation,
     CountInformation,
     AccountInteraction;
-  let profileData;
+  let isLoading = true;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
@@ -32,7 +32,7 @@
 
   pathname.set($currentUser?.displayName);
 
-  $: getProfileByUserId($currentUser.uid).then((res) => (profileData = res));
+  $: getProfileByUserId($currentUser.uid).then((res) => profileData.set(res));
 </script>
 
 <svelte:head>
@@ -49,8 +49,8 @@
     />
     <svelte:component
       this={DescriptionInformation}
-      bio={profileData?.bio}
-      city={profileData?.city}
+      bio={$profileData?.bio}
+      city={$profileData?.city}
     />
     <svelte:component this={CountInformation} />
     <svelte:component this={AccountInteraction} />

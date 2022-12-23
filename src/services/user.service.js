@@ -2,7 +2,6 @@ import { db } from "../config/firebase";
 import {
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   setDoc,
@@ -19,7 +18,7 @@ export async function getUserByUsername(username) {
   );
 
   return {
-    id: userResult.id,
+    id: userResult?.id,
     ...userResult.data(),
   };
 }

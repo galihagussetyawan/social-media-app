@@ -57,6 +57,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>{$pathname} (@{$params?.username})</title>
+</svelte:head>
+
 <svelte:component this={MainLayout}>
   {#if isLoading}
     <svelte:component this={LoadingCircle} />
