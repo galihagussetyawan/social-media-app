@@ -8,7 +8,6 @@
     DescriptionInformation,
     CountInformation,
     AccountInteraction;
-  let isLoading = true;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)

@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 import { auth, db } from "../config/firebase";
 
 export const currentUser = writable();
+export const isCheking = writable(false);
 export const profileData = writable();
 
 currentUser.subscribe((valueUser) => {
@@ -15,6 +16,7 @@ currentUser.subscribe((valueUser) => {
       } else {
         currentUser.set();
       }
+      isCheking.set(true);
     });
   }
 });

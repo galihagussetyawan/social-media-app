@@ -14,5 +14,8 @@ export async function handleSignWithGoogleAccount() {
 }
 
 export async function handleLogout() {
-  await signOut(auth).then((res) => currentUser.set());
+  await signOut(auth).then((res) => {
+    currentUser.set();
+    window.location.reload();
+  });
 }

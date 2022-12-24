@@ -15,8 +15,8 @@
     class="w-8 h-8 absolute -top-2 -right-2 rounded-full border-4 border-gray-100 outline-gray-100 bg-red-500"
   /> -->
   <div class="flex justify-between">
-    <div>
-      <Link to={`/${data?.user?.username}`} class="flex gap-2">
+    <div class="w-full">
+      <Link to={`/${data?.user?.username}`} class="w-fit flex gap-2">
         {#if data?.user?.photoURL}
           <img
             src={data?.user?.photoURL}
