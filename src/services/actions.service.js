@@ -1,6 +1,7 @@
 import { db } from "../config/firebase";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -24,7 +25,12 @@ export async function follow(followUserId, followUserIsPrivate, currentUserId) {
   });
 }
 
-export async function unfollow(a, b) {}
+export async function unfollow(followUserId, currentUserId) {
+  //delete following user on current user
+  await deleteDoc(doc(db, "users", currentUserId, "following", followUserId));
+  //delete followers current user on user
+  await deleteDoc(doc(db, "users", followUserId, "followers", currentUserId));
+}
 
 export async function checkIsFollowed(followUserId, currentUserId) {
   const followingSnap = await getDocs(

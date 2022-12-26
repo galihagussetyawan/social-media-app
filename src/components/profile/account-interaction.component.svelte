@@ -1,7 +1,7 @@
 <script defer>
   import { useParams, Link, navigate } from "svelte-navigator";
   import { currentUser } from "../../stores/auth.store";
-  import { follow } from "../../services/actions.service";
+  import { follow, unfollow } from "../../services/actions.service";
 
   export let data;
 
@@ -11,8 +11,16 @@
     if (!$currentUser?.uid) {
       navigate("/register");
     } else {
-      follow(data?.id, data?.isPrivate, $currentUser?.uid);
+      follow(data?.id, data?.isPrivate, $currentUser?.uid).then(
+        () => (data.isFollowing = true)
+      );
     }
+  }
+
+  function handleUnfollow() {
+    unfollow(data?.id, $currentUser?.uid).then(
+      () => (data.isFollowing = false)
+    );
   }
 </script>
 
@@ -25,7 +33,7 @@
     {#if data?.isFollowing}
       <button
         class="p-2 px-8 rounded-2xl text-black bg-gray-300"
-        on:click={handleFollow}>Unfollow</button
+        on:click={handleUnfollow}>Unfollow</button
       >
     {:else}
       <button
