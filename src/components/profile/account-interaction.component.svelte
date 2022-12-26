@@ -1,7 +1,7 @@
 <script defer>
   import { useParams, Link, navigate } from "svelte-navigator";
   import { currentUser } from "../../stores/auth.store";
-  import { follow, unfollow } from "../../services/actions.service";
+  import { follow, unfollow } from "../../services/follow-unfollow.service";
 
   export let data;
 

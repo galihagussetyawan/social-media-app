@@ -5,7 +5,11 @@
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
   import { getUserByUsername } from "../services/user.service";
   import { getProfileByUserId } from "../services/profile.service";
-  import { checkIsFollowed } from "../services/actions.service";
+  import {
+    checkIsFollowed,
+    getFollowersCount,
+    getFollowingCount,
+  } from "../services/follow-unfollow.service";
   import { onMount } from "svelte";
 
   let MainLayout,
@@ -13,7 +17,7 @@
     DescriptionInformation,
     CountInformation,
     AccountInteraction;
-  let data, profileData, isFollowing;
+  let data, profileData, countInformationData;
   let isLoading = true;
 
   const params = useParams();
@@ -56,6 +60,11 @@
       await data?.id,
       await $currentUser?.uid
     );
+    countInformationData = {
+      posts: 0,
+      followers: await getFollowersCount(data?.id),
+      following: await getFollowingCount(data?.id),
+    };
     isLoading = false;
   });
 </script>
@@ -80,7 +89,7 @@
         bio={profileData?.bio}
         city={profileData?.city}
       />
-      <svelte:component this={CountInformation} />
+      <svelte:component this={CountInformation} data={countInformationData} />
       <svelte:component this={AccountInteraction} {data} />
     </div>
   {/if}

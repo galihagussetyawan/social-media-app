@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getCountFromServer,
   getDocs,
   query,
   setDoc,
@@ -43,4 +44,16 @@ export async function checkIsFollowed(followUserId, currentUserId) {
   return followingSnap.docs.map((snapshot) => snapshot.data()).length > 0
     ? true
     : false;
+}
+
+export async function getFollowingCount(userId) {
+  return await (
+    await getCountFromServer(collection(db, "users", userId, "following"))
+  ).data()?.count;
+}
+
+export async function getFollowersCount(userId) {
+  return await (
+    await getCountFromServer(collection(db, "users", userId, "followers"))
+  ).data()?.count;
 }

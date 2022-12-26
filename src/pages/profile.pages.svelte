@@ -1,7 +1,12 @@
 <script defer>
+  import { onMount } from "svelte";
   import { currentUser, profileData } from "../stores/auth.store";
   import { pathname } from "../stores/global.store";
   import { getProfileByUserId } from "../services/profile.service";
+  import {
+    getFollowersCount,
+    getFollowingCount,
+  } from "../services/follow-unfollow.service";
 
   let MainLayout,
     ProfilePicture,
@@ -29,9 +34,18 @@
     (res) => (AccountInteraction = res.default)
   );
 
+  let countInformationData;
+
   pathname.set($currentUser?.displayName);
 
-  $: getProfileByUserId($currentUser.uid).then((res) => profileData.set(res));
+  onMount(async () => {
+    profileData.set(await getProfileByUserId($currentUser.uid));
+    countInformationData = {
+      posts: 0,
+      followers: await getFollowersCount($currentUser?.uid),
+      following: await getFollowingCount($currentUser?.uid),
+    };
+  });
 </script>
 
 <svelte:head>
@@ -51,7 +65,7 @@
       bio={$profileData?.bio}
       city={$profileData?.city}
     />
-    <svelte:component this={CountInformation} />
+    <svelte:component this={CountInformation} data={countInformationData} />
     <svelte:component this={AccountInteraction} />
   </div>
 </svelte:component>
