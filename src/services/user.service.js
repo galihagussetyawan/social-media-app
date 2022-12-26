@@ -24,8 +24,8 @@ export async function getUserByUsername(username) {
 }
 
 export async function addUser(value) {
-  await setDoc(doc(db, "users", value?.user?.id), {
-    username: generateFromEmail(value?.user?.email),
+  await setDoc(doc(db, "users", value?.user?.uid), {
+    username: await generateFromEmail(value?.user?.email),
     displayName: value?.user?.displayName,
     email: value?.user?.email,
     photoURL: value?.user?.photoURL,

@@ -12,7 +12,7 @@ currentUser.subscribe((valueUser) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userSnap = await getDoc(doc(db, "users", user.uid));
-        currentUser.set({ ...user, username: userSnap?.data().username });
+        currentUser.set({ ...user, username: userSnap?.data()?.username });
       } else {
         currentUser.set();
       }

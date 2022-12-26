@@ -5,13 +5,15 @@
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
   import { getUserByUsername } from "../services/user.service";
   import { getProfileByUserId } from "../services/profile.service";
+  import { checkIsFollowed } from "../services/actions.service";
+  import { onMount } from "svelte";
 
   let MainLayout,
     ProfilePicture,
     DescriptionInformation,
     CountInformation,
     AccountInteraction;
-  let data, profileData;
+  let data, profileData, isFollowing;
   let isLoading = true;
 
   const params = useParams();
@@ -46,15 +48,16 @@
     pathname.set(data?.displayName);
   }
 
-  $: getUserByUsername($params?.username).then((res) => {
-    data = res;
-  });
-
-  $: getProfileByUserId(data?.id).then((res) => (profileData = res));
-
-  $: if (data && profileData) {
+  onMount(async () => {
+    data = await getUserByUsername($params?.username);
+    profileData = await getProfileByUserId(data?.id);
+    // @ts-ignore
+    data.isFollowing = await checkIsFollowed(
+      await data?.id,
+      await $currentUser?.uid
+    );
     isLoading = false;
-  }
+  });
 </script>
 
 <svelte:head>
@@ -78,7 +81,7 @@
         city={profileData?.city}
       />
       <svelte:component this={CountInformation} />
-      <svelte:component this={AccountInteraction} />
+      <svelte:component this={AccountInteraction} {data} />
     </div>
   {/if}
 </svelte:component>

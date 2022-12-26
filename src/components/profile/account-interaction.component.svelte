@@ -1,7 +1,19 @@
 <script defer>
-  import { useParams, Link } from "svelte-navigator";
+  import { useParams, Link, navigate } from "svelte-navigator";
+  import { currentUser } from "../../stores/auth.store";
+  import { follow } from "../../services/actions.service";
+
+  export let data;
 
   const params = useParams();
+
+  function handleFollow() {
+    if (!$currentUser?.uid) {
+      navigate("/register");
+    } else {
+      follow(data?.id, data?.isPrivate, $currentUser?.uid);
+    }
+  }
 </script>
 
 <div class=" flex justify-center px-5 space-x-3">
@@ -10,10 +22,18 @@
       >Edit Profile</Link
     >
   {:else}
-    <button
-      class="p-2 px-8 rounded-2xl text-white
-     bg-[#01DC14]">Follow</button
-    >
+    {#if data?.isFollowing}
+      <button
+        class="p-2 px-8 rounded-2xl text-black bg-gray-300"
+        on:click={handleFollow}>Unfollow</button
+      >
+    {:else}
+      <button
+        class="p-2 px-8 rounded-2xl text-white
+     bg-[#01DC14]"
+        on:click={handleFollow}>Follow</button
+      >
+    {/if}
     <button class="p-2 rounded-2xl bg-gray-300">
       <i>
         <svg
