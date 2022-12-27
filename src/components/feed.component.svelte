@@ -3,7 +3,7 @@
   import FeedCard from "./feed/feed-card.component.svelte";
   import { currentGeolocation } from "../stores/geolocation.store";
   import { currentUser } from "../stores/auth.store";
-  import { feedsDatas } from "../stores/feed.store";
+  import { feedsData } from "../stores/feed.store";
   import {
     collection,
     GeoPoint,
@@ -32,7 +32,7 @@
         let lesserGeopoint = new GeoPoint(lowerLat, lowerLon);
         let greaterGeopoint = new GeoPoint(greaterLat, greaterLon);
 
-        if (!$feedsDatas) {
+        if (!$feedsData) {
           const feedSnap = await getDocs(
             query(
               collection(db, "feeds"),
@@ -58,7 +58,7 @@
             );
           }
 
-          feedsDatas.set(await feedResult());
+          feedsData.set(await feedResult());
         }
       }
     });
@@ -66,13 +66,13 @@
 </script>
 
 <div class="space-y-5 mt-5">
-  {#if !$feedsDatas}
+  {#if !$feedsData}
     <div>
       <FeedCardSkeleton />
       <FeedCardSkeleton />
     </div>
   {:else}
-    {#each $feedsDatas as feed}
+    {#each $feedsData as feed}
       <FeedCard data={feed} />
     {/each}
   {/if}

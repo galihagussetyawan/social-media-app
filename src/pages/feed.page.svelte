@@ -3,7 +3,7 @@
   import { pathname } from "../stores/global.store";
   import { getFeedById } from "../services/feed.service";
   import { useParams } from "svelte-navigator";
-  import { feedsDatas } from "../stores/feed.store";
+  import { feedsData } from "../stores/feed.store";
   import FeedCard from "../components/feed/feed-card.component.svelte";
 
   let MainLayout;
@@ -17,8 +17,8 @@
   const params = useParams();
 
   onMount(() => {
-    if ($feedsDatas?.some((data) => data.id.includes($params.feedid))) {
-      feedDetail = $feedsDatas.find((data) => data.id === $params.feedid);
+    if ($feedsData?.some((data) => data.id.includes($params.feedid))) {
+      feedDetail = $feedsData.find((data) => data.id === $params.feedid);
       isLoading = false;
     } else {
       getFeedById($params.feedid).then((res) => {
