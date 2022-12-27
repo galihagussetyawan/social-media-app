@@ -40,12 +40,18 @@
   pathname.set($currentUser?.displayName);
 
   onMount(async () => {
-    profileData.set(await getProfileByUserId($currentUser.uid));
-    countInformationData = {
-      posts: 0,
-      followers: await getFollowersCount($currentUser?.uid),
-      following: await getFollowingCount($currentUser?.uid),
-    };
+    if (!$profileData) {
+      profileData.set(await getProfileByUserId($currentUser.uid));
+      countInformationData = {
+        posts: 0,
+        followers: await getFollowersCount($currentUser?.uid),
+        following: await getFollowingCount($currentUser?.uid),
+      };
+      profileData.set({
+        ...$profileData,
+        countInformationData,
+      });
+    }
   });
 </script>
 
@@ -66,7 +72,10 @@
       bio={$profileData?.bio}
       city={$profileData?.city}
     />
-    <svelte:component this={CountInformation} data={countInformationData} />
+    <svelte:component
+      this={CountInformation}
+      data={$profileData?.countInformationData}
+    />
     <svelte:component this={AccountInteraction} />
   </div>
 
