@@ -10,6 +10,8 @@ import {
   GeoPoint,
   updateDoc,
   getDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 
@@ -39,6 +41,26 @@ export async function getFeedById(feedId) {
     user: await userSnap.data(),
     reactions: await getFeedReactionByFeedId(feedId, await userSnap.id),
   };
+}
+
+export async function getFeedsByUserId(userId) {
+  const feedsSnap = await getDocs(
+    query(
+      collection(db, "feeds"),
+      where("userId", "==", doc(db, "users", userId))
+    )
+  );
+  const userSnap = await getDoc(doc(db, "users", userId));
+  return await Promise.all(
+    feedsSnap.docs.map(async (snapshot) => {
+      return {
+        id: snapshot?.id,
+        ...snapshot?.data(),
+        user: userSnap?.data(),
+        reactions: await getFeedReactionByFeedId(snapshot?.id, userSnap?.id),
+      };
+    })
+  );
 }
 
 export async function addReactionFeed(feedId, userId, symbol) {
