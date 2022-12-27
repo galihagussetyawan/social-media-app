@@ -28,22 +28,26 @@
   {#if !$params?.username}
     <Link
       to={"/profile/edit"}
-      class="p-2 px-8 rounded-2xl text-gray-500 bg-gray-300">Edit Profile</Link
+      class="w-5/12 h-[40px] flex justify-center items-center rounded-2xl bg-gray-300"
+      >Edit Profile</Link
     >
   {:else}
+    <!-- follow and unfollow button -->
     {#if data?.isFollowing}
       <button
-        class="p-2 px-8 rounded-2xl text-black bg-gray-300"
+        class="w-5/12 h-[40px] rounded-2xl text-black bg-gray-300"
         on:click={handleUnfollow}>Unfollow</button
       >
     {:else}
       <button
-        class="p-2 px-8 rounded-2xl text-white
+        class="w-5/12 h-[40px] rounded-2xl text-white
      bg-[#01DC14]"
         on:click={handleFollow}>Follow</button
       >
     {/if}
-    <button class="p-2 rounded-2xl bg-gray-300">
+    <button
+      class="h-[40px] flex justify-center items-center aspect-square rounded-2xl bg-gray-300"
+    >
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
