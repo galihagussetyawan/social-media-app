@@ -48,8 +48,9 @@
     <!-- <div
       class="min-w-[78px] max-w-[78px] min-h-[78px] max-h-[78px] rounded-2xl bg-gray-100"
     /> -->
-    <div class="w-full aspect-[2/1] bg-gray-100" />
+    <div class="w-full aspect-[16/9] bg-gray-100" />
   {/if}
+
   <Reaction {data} />
   <div>Comment</div>
 </div>
