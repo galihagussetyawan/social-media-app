@@ -3,7 +3,7 @@
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
   import LoginForm from "../components/register/login-form.component.svelte";
-  import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
+  import LoadingScreenCircle from "../components/skeleton/loading-screen-circle.component.svelte";
 
   let RegisterLayout;
   let isChecking = true;
@@ -26,7 +26,7 @@
 
 <svelte:component this={RegisterLayout}>
   {#if isChecking}
-    <svelte:component this={LoadingCircle} />
+    <svelte:component this={LoadingScreenCircle} />
   {:else}
     <LoginForm />
   {/if}

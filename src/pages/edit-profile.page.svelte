@@ -7,7 +7,7 @@
     updateProfile,
   } from "../services/profile.service";
 
-  let MainLayout, LoadingCircle;
+  let MainLayout, LoadingScreenCircle;
   let profileId, profession, city, bio;
   let isLoading = true;
 
@@ -15,8 +15,8 @@
     (res) => (MainLayout = res.default)
   );
 
-  import("../components/skeleton/loading-circle.component.svelte").then(
-    (res) => (LoadingCircle = res.default)
+  import("../components/skeleton/loading-screen-circle.component.svelte").then(
+    (res) => (LoadingScreenCircle = res.default)
   );
 
   if ($currentUser.uid) {
@@ -52,7 +52,7 @@
 
 <svelte:component this={MainLayout}>
   {#if isLoading}
-    <svelte:component this={LoadingCircle} />
+    <svelte:component this={LoadingScreenCircle} />
   {:else}
     <div class="p-5 mx-5 space-y-3 rounded-2xl bg-white">
       <div class="grid grid-cols-1 space-y-1">

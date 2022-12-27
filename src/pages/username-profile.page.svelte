@@ -2,7 +2,7 @@
   import { Link, navigate, useParams } from "svelte-navigator";
   import { pathname } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
-  import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
+  import LoadingScreenCircle from "../components/skeleton/loading-screen-circle.component.svelte";
   import { getUserByUsername } from "../services/user.service";
   import { getProfileByUserId } from "../services/profile.service";
   import {
@@ -74,7 +74,7 @@
 
 <svelte:component this={MainLayout}>
   {#if isLoading}
-    <svelte:component this={LoadingCircle} />
+    <svelte:component this={LoadingScreenCircle} />
   {:else}
     <div class=" space-y-5">
       <svelte:component
