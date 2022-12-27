@@ -4,12 +4,6 @@
   function handleChangeTab(tab) {
     tabProfile.set(tab);
   }
-
-  function activeTabClass(tab) {
-    return $tabProfile === tab
-      ? "text-black border-2 border-gray-300 bg-white"
-      : "text-gray-500";
-  }
 </script>
 
 <div class="grid grid-cols-3 mx-5 rounded-2xl bg-gray-300">
