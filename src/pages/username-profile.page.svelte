@@ -1,5 +1,5 @@
 <script defer>
-  import { navigate, useParams } from "svelte-navigator";
+  import { Link, navigate, useParams } from "svelte-navigator";
   import { pathname } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
   import LoadingCircle from "../components/skeleton/loading-circle.component.svelte";
@@ -56,10 +56,9 @@
     data = await getUserByUsername($params?.username);
     profileData = await getProfileByUserId(data?.id);
     // @ts-ignore
-    data.isFollowing = await checkIsFollowed(
-      await data?.id,
-      await $currentUser?.uid
-    );
+    data.isFollowing = !$currentUser
+      ? false
+      : await checkIsFollowed(await data?.id, await $currentUser?.uid);
     countInformationData = {
       posts: 0,
       followers: await getFollowersCount(data?.id),
