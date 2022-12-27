@@ -26,8 +26,9 @@
 
 <div class=" flex justify-center px-5 space-x-3">
   {#if !$params?.username}
-    <Link to={"/profile/edit"} class="p-2 px-8 rounded-2xl bg-gray-300"
-      >Edit Profile</Link
+    <Link
+      to={"/profile/edit"}
+      class="p-2 px-8 rounded-2xl text-gray-500 bg-gray-300">Edit Profile</Link
     >
   {:else}
     {#if data?.isFollowing}
