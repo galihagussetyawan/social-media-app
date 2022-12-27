@@ -7,6 +7,7 @@
     getFollowersCount,
     getFollowingCount,
   } from "../services/follow-unfollow.service";
+  import ContainerTab from "../components/profile/tab/container.tab.component.svelte";
 
   let MainLayout,
     ProfilePicture,
@@ -68,4 +69,6 @@
     <svelte:component this={CountInformation} data={countInformationData} />
     <svelte:component this={AccountInteraction} />
   </div>
+
+  <ContainerTab />
 </svelte:component>
