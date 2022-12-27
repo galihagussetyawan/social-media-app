@@ -42,6 +42,7 @@
 </script>
 
 <div>
+  <!-- info count reaction and distance -->
   <div class="flex justify-between">
     <span class=" text-gray-400">{data?.reactions?.count} reactions</span>
     <div class="flex items-center space-x-1 text-gray-400">
@@ -73,6 +74,8 @@
       >
     </div>
   </div>
+
+  <!-- reaction icon button section -->
   <div class="grid grid-cols-7 gap-1">
     <button
       class={`aspect-square rounded-2xl ${
