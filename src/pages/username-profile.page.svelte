@@ -1,6 +1,6 @@
 <script defer>
-  import { Link, navigate, useParams } from "svelte-navigator";
-  import { pathname } from "../stores/global.store";
+  import { navigate, useParams } from "svelte-navigator";
+  import { pathname, isUpdate } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
   import LoadingScreenCircle from "../components/skeleton/loading-screen-circle.component.svelte";
   import { getUserByUsername } from "../services/user.service";
@@ -10,7 +10,7 @@
     getFollowersCount,
     getFollowingCount,
   } from "../services/follow-unfollow.service";
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
 
   let MainLayout,
     ProfilePicture,
@@ -65,6 +65,17 @@
       following: await getFollowingCount(data?.id),
     };
     isLoading = false;
+  });
+
+  afterUpdate(async () => {
+    if ($isUpdate) {
+      countInformationData = {
+        posts: 0,
+        followers: await getFollowersCount(data?.id),
+        following: await getFollowingCount(data?.id),
+      };
+      isUpdate.set(false);
+    }
   });
 </script>
 
