@@ -1,18 +1,17 @@
 <script defer>
-  import { Link, useLocation } from "svelte-navigator";
+  import { Link, useParams } from "svelte-navigator";
   import Reaction from "../reaction.component.svelte";
   import ProfilePhoto from "./profile-photo.component.svelte";
 
   export let data;
-  let location = useLocation();
+  let params = useParams();
 </script>
 
 <div class=" min-h-[164px] flex flex-col gap-5 mx-5 p-5 rounded-2xl bg-white">
-  <!-- header (Profile Picture, Display Name) -->
   <svelte:component this={ProfilePhoto} {data} />
 
   <!-- status text section -->
-  {#if $location?.pathname === "/"}
+  {#if !$params?.feedid}
     <Link to={`/status/${data?.id}`}>
       <p class="w-full py-2 leading-tight text-2xl">
         {data?.text}
