@@ -1,10 +1,16 @@
 <script defer>
   import { Link, useParams } from "svelte-navigator";
-  import Reaction from "../reaction.component.svelte";
-  import ProfilePhoto from "./profile-photo.component.svelte";
-
   export let data;
+
+  let Reaction, ProfilePhoto;
   let params = useParams();
+
+  import("../reaction.component.svelte").then(
+    (res) => (Reaction = res.default)
+  );
+  import("./profile-photo.component.svelte").then(
+    (res) => (ProfilePhoto = res.default)
+  );
 </script>
 
 <div class=" min-h-[164px] flex flex-col gap-5 mx-5 p-5 rounded-2xl bg-white">
@@ -26,6 +32,6 @@
     <div class="w-full aspect-[16/9] bg-gray-100" />
   {/if}
 
-  <Reaction {data} />
+  <svelte:component this={Reaction} {data} />
   <div>Comment</div>
 </div>
