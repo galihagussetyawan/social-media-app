@@ -1,6 +1,7 @@
+import { db } from "../config/firebase";
 import ImageKit from "imagekit";
 // @ts-ignore
-import imageCompression from "browser-image-compression";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 export const imagekit = new ImageKit({
   publicKey: import.meta.env.VITE_PUBLIC_KEY,
@@ -10,30 +11,30 @@ export const imagekit = new ImageKit({
 
 export async function browseImages() {}
 
-export async function imageCompress(file) {
-  const options = {
-    maxSizeMB: 0.5,
-    // maxWidthOrHeight: 1024,
-    useWebWorker: true,
-    onProgress: (p) => console.log(p),
-    alwaysKeepResolution: true,
-  };
-
-  try {
-    // @ts-ignore
-    const imageCompressed = await imageCompression(file, options);
-    return imageCompressed;
-  } catch (error) {}
-}
-
-export async function uploadImage(file) {
-  await imagekit
+export async function uploadImage(file, folderName) {
+  return await imagekit
     .upload({
       file: file,
       fileName: file?.name,
       tags: ["tag"],
-      folder: "/feeds",
+      folder: "/feeds/" + folderName,
     })
-    .then((result) => console.log(result))
-    .then((error) => console.log(error));
+    .then((res) => res);
+}
+
+export async function postImage(feedId, imageId, imageResult) {
+  return await setDoc(doc(db, "feeds", feedId, "images", imageId), {
+    ...imageResult,
+  });
+}
+
+export async function getAllImages(feedId) {
+  return await (
+    await getDocs(collection(db, "feeds", feedId, "images"))
+  ).docs.map((docSnap) => {
+    return {
+      id: docSnap?.id,
+      ...docSnap.data(),
+    };
+  });
 }

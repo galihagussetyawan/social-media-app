@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
+import { getAllImages } from "./images.service";
 
 let user, geolocation;
 
@@ -22,13 +23,13 @@ export async function postFeed(statusText) {
   currentGeolocation.subscribe((value) => (geolocation = value));
 
   if (user?.uid && geolocation) {
-    addDoc(collection(db, "feeds"), {
+    return await addDoc(collection(db, "feeds"), {
       text: statusText,
       userId: doc(db, "users", user.uid),
       location: new GeoPoint(geolocation.latitude, geolocation.longitude),
       createdAt: Date.now().toString(),
       updatedAt: Date.now().toString(),
-    });
+    }).then((docRef) => docRef.id);
   }
 }
 
@@ -58,6 +59,7 @@ export async function getFeedsByUserId(userId) {
         ...snapshot?.data(),
         user: userSnap?.data(),
         reactions: await getFeedReactionByFeedId(snapshot?.id, userSnap?.id),
+        images: await getAllImages(snapshot?.id),
       };
     })
   );

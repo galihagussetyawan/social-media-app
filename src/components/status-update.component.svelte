@@ -1,27 +1,49 @@
 <script defer>
   import { navigate } from "svelte-navigator";
   import { currentUser } from "../stores/auth.store";
+  import imageCompression from "browser-image-compression";
   import { postFeed } from "../services/feed.service";
-  import { uploadImage, imageCompress } from "../services/images.service";
+  import { uploadImage, postImage } from "../services/images.service";
 
   let statusText;
-  let images, imageURLs;
+  let images, imageURLs, progressPercent;
 
-  function handleStatusPublish() {
+  async function handleStatusPublish() {
     if ($currentUser) {
       if (!statusText) return;
 
-      postFeed(statusText);
+      const feedId = await postFeed(statusText);
+
+      if (images?.length > 0) {
+        images?.forEach(async (image) => {
+          const uploadResult = await uploadImage(await image, await feedId);
+          // @ts-ignore
+          await postImage(
+            await feedId,
+            // @ts-ignore
+            await uploadResult?.fileId,
+            await uploadResult
+          );
+        });
+      }
     } else {
       navigate("/register");
     }
   }
 
   async function handleChangeBrowseImage(e) {
-    // images = [...e.target.files];
+    const options = {
+      maxSizeMB: 0.1,
+      useWebWorker: true,
+      fileType: "image/webp",
+      initialQuality: 0.5,
+      alwaysKeepResolution: true,
+      onProgress: (p) => (progressPercent = p),
+    };
+
     const tempArr = [];
     [...e.target.files].forEach((file) => {
-      tempArr.push(imageCompress(file));
+      tempArr.push(imageCompression(file, options));
     });
 
     images = await Promise.all(tempArr);
@@ -30,12 +52,6 @@
   function handleRemoveImageByIndex(index) {
     images?.splice(index, 1);
     images = [...images];
-  }
-
-  function handleUploadImage() {
-    images?.forEach((image) => {
-      uploadImage(image);
-    });
   }
 
   $: {
@@ -150,4 +166,3 @@
     >
   </div>
 </div>
-<button on:click={handleUploadImage}>Upload Image</button>

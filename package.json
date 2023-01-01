@@ -24,6 +24,7 @@
     "geolib": "^3.3.3",
     "imagekit": "^4.1.2",
     "imagekit-javascript": "^1.5.4",
+    "svelte-lazy-image": "^0.5.1",
     "svelte-navigator": "^3.2.2",
     "unique-username-generator": "^1.1.3"
   }

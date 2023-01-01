@@ -15,6 +15,7 @@
   import { db } from "../config/firebase";
   import FeedCardSkeleton from "./skeleton/feed-card-skeleton.component.svelte";
   import { getFeedReactionByFeedId } from "../services/feed.service";
+  import { getAllImages } from "../services/images.service";
 
   onMount(async () => {
     currentGeolocation.subscribe(async (geoValue) => {
@@ -53,6 +54,7 @@
                     docSnap?.id,
                     $currentUser?.uid
                   ),
+                  images: await getAllImages(docSnap?.id),
                 };
               })
             );

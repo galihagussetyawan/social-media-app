@@ -1,5 +1,7 @@
 <script defer>
   import { Link, useParams } from "svelte-navigator";
+  import ImageCollectionCard from "../images/image-collection-card.component.svelte";
+
   export let data;
 
   let Reaction, ProfilePhoto;
@@ -28,8 +30,8 @@
   {/if}
 
   <!-- image section -->
-  {#if data?.images}
-    <div class="w-full aspect-[16/9] bg-gray-100" />
+  {#if data?.images?.length > 0}
+    <svelte:component this={ImageCollectionCard} imagesList={data?.images} />
   {/if}
 
   <svelte:component this={Reaction} {data} />
