@@ -4,7 +4,7 @@
   export let imagesList;
 </script>
 
-{#if imagesList.length === 12}
+{#if imagesList.length === 1}
   <LazyImage
     src="https://images.pexels.com/photos/1525041/pexels-photo-1525041.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     class="aspect-[16/9] rounded-2xl object-cover object-center bg-gray-100"
@@ -41,7 +41,7 @@
   </div>
 {/if}
 
-{#if imagesList.length > 3 || true}
+{#if imagesList.length > 3}
   <div class="grid grid-cols-2 gap-2">
     <LazyImage
       src="https://images.pexels.com/photos/1525041/pexels-photo-1525041.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
