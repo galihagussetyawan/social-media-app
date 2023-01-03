@@ -37,11 +37,14 @@ export async function getFeedById(feedId) {
   const feedSnap = await getDoc(doc(db, "feeds", feedId));
   const userSnap = await getDoc(await feedSnap.data().userId);
 
-  return {
-    feed: await feedSnap.data(),
-    user: await userSnap.data(),
-    reactions: await getFeedReactionByFeedId(feedId, await userSnap.id),
-  };
+  return await Promise.resolve({
+    id: feedSnap.id,
+    ...feedSnap?.data(),
+    user: userSnap?.data(),
+    // @ts-ignore
+    reactions: await getFeedReactionByFeedId(feedSnap?.id),
+    images: await getAllImages(feedSnap?.id),
+  });
 }
 
 export async function getFeedsByUserId(userId) {
@@ -58,6 +61,7 @@ export async function getFeedsByUserId(userId) {
         id: snapshot?.id,
         ...snapshot?.data(),
         user: userSnap?.data(),
+        // @ts-ignore
         reactions: await getFeedReactionByFeedId(snapshot?.id, userSnap?.id),
         images: await getAllImages(snapshot?.id),
       };
@@ -84,7 +88,7 @@ export async function deleteReactionfeed(feedId, reactionId) {
   await deleteDoc(doc(db, "feeds", feedId, "reactions", reactionId));
 }
 
-export async function getFeedReactionByFeedId(feedId, userId) {
+export async function getFeedReactionByFeedId(feedId) {
   const reactionTotal = await getCountFromServer(
     collection(db, "feeds", feedId, "reactions")
   ).then((snap) => snap.data());

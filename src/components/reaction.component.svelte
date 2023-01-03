@@ -68,12 +68,12 @@
       <span
         >{getDistance(
           {
-            latitude: data.location._lat,
-            longitude: data.location._long,
+            latitude: data?.location?._lat,
+            longitude: data?.location?._long,
           },
           {
-            latitude: $currentGeolocation.latitude,
-            longitude: $currentGeolocation.longitude,
+            latitude: $currentGeolocation?.latitude,
+            longitude: $currentGeolocation?.longitude,
           }
         )} meters</span
       >

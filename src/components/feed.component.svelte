@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import FeedCard from "./feed/feed-card.component.svelte";
   import { currentGeolocation } from "../stores/geolocation.store";
-  import { currentUser } from "../stores/auth.store";
   import { feedsData } from "../stores/feed.store";
   import {
     collection,
@@ -50,10 +49,7 @@
                   id: docSnap.id,
                   ...docSnap.data(),
                   user: await userSnap.data(),
-                  reactions: await getFeedReactionByFeedId(
-                    docSnap?.id,
-                    $currentUser?.uid
-                  ),
+                  reactions: await getFeedReactionByFeedId(docSnap?.id),
                   images: await getAllImages(docSnap?.id),
                 };
               })
