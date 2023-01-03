@@ -13,6 +13,7 @@
   let datas;
 
   onMount(async () => {
+    // if url pathname /:username
     if ($params?.username) {
       datas = await getFeedsByUserId(
         await (
@@ -20,6 +21,7 @@
         )?.id
       );
     } else {
+      // url pathname /profile
       if (!$userFeedsData) {
         userFeedsData.set(await getFeedsByUserId($currentUser?.uid));
       }

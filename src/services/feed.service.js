@@ -94,10 +94,16 @@ export async function getFeedReactionByFeedId(feedId, userId) {
     return snap?.docs?.map((res) => ({ id: res.id, ...res.data() }));
   });
   // @ts-ignore
-  const filterUserReactionOnFeed = reactionFeedUserList.find(
-    // @ts-ignore
-    (data) => data?.userId === userId
-  );
+  let filterUserReactionOnFeed;
+
+  currentUser.subscribe((userValue) => {
+    if (userValue?.uid) {
+      filterUserReactionOnFeed = reactionFeedUserList.find(
+        // @ts-ignore
+        (data) => data?.userId === userValue?.uid
+      );
+    }
+  });
 
   return {
     ...reactionTotal,
