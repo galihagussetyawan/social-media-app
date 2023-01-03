@@ -6,7 +6,8 @@
   import { uploadImage, postImage } from "../services/images.service";
 
   let statusText;
-  let images, imageURLs, progressPercent;
+  let images, imageURLs;
+  let progressPercent = 0;
 
   async function handleStatusPublish() {
     if ($currentUser) {
@@ -107,6 +108,15 @@
         </div>
       {/if}
     </div>
+
+    <!-- progress bars compression image -->
+    <div class="w-full bg-gray-100 rounded-2xl h-2">
+      <div
+        class="max-w-full bg-[#01DC14] h-2 rounded-2xl"
+        style="width: {progressPercent}%"
+      />
+    </div>
+
     <div class="w-fit h-10 flex items-center gap-5 p-2 rounded-2xl bg-white">
       <span>Add+</span>
       <label>
@@ -166,3 +176,9 @@
     >
   </div>
 </div>
+
+<!-- <style>
+  .progress {
+    width: 10 + "%";
+  }
+</style> -->
