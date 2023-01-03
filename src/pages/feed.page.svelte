@@ -6,12 +6,15 @@
   import { feedsData } from "../stores/feed.store";
   import FeedCard from "../components/feed/feed-card.component.svelte";
 
-  let MainLayout;
+  let MainLayout, LoadingScreenCircle;
   let isLoading = true;
   let feedDetail;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
+  );
+  import("../components/skeleton/loading-screen-circle.component.svelte").then(
+    (res) => (LoadingScreenCircle = res.default)
   );
 
   const params = useParams();
@@ -33,7 +36,7 @@
 
 <svelte:component this={MainLayout}>
   {#if isLoading}
-    <div>Loading...</div>
+    <svelte:component this={LoadingScreenCircle} />
   {:else}
     <FeedCard data={feedDetail} />
   {/if}

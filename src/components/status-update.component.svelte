@@ -176,9 +176,3 @@
     >
   </div>
 </div>
-
-<!-- <style>
-  .progress {
-    width: 10 + "%";
-  }
-</style> -->
