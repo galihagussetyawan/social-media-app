@@ -17,16 +17,21 @@
     } else {
       if (data?.reactions?.filterUserReaction) {
         if (data?.reactions?.filterUserReaction?.symbol === symbol) {
-          deleteReactionfeed(data?.id, data?.reactions?.filterUserReaction?.id);
-          data.reactions.filterUserReaction = null;
-          data.reactions.count = data?.reactions?.count - 1;
+          deleteReactionfeed(
+            data?.id,
+            data?.reactions?.filterUserReaction?.id
+          ).then((res) => {
+            data.reactions.filterUserReaction = null;
+            data.reactions.count = data?.reactions?.count - 1;
+          });
         } else {
           updateReactionFeed(
             data?.id,
             data?.reactions?.filterUserReaction?.id,
             symbol
-          );
-          data.reactions.filterUserReaction.symbol = symbol;
+          ).then((res) => {
+            data.reactions.filterUserReaction.symbol = symbol;
+          });
         }
       } else {
         addReactionFeed(data?.id, $currentUser?.uid, symbol).then((res) => {
@@ -34,8 +39,8 @@
             id: res,
             symbol: symbol,
           };
+          data.reactions.count = data.reactions.count + 1;
         });
-        data.reactions.count = data.reactions.count + 1;
       }
     }
   }

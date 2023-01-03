@@ -74,14 +74,14 @@ export async function addReactionFeed(feedId, userId, symbol) {
   }).then((docRef) => docRef.id);
 }
 
-export function updateReactionFeed(feedId, reactionId, symbol) {
-  updateDoc(doc(db, "feeds", feedId, "reactions", reactionId), {
+export async function updateReactionFeed(feedId, reactionId, symbol) {
+  await updateDoc(doc(db, "feeds", feedId, "reactions", reactionId), {
     symbol: symbol,
   });
 }
 
-export function deleteReactionfeed(feedId, reactionId) {
-  deleteDoc(doc(db, "feeds", feedId, "reactions", reactionId));
+export async function deleteReactionfeed(feedId, reactionId) {
+  await deleteDoc(doc(db, "feeds", feedId, "reactions", reactionId));
 }
 
 export async function getFeedReactionByFeedId(feedId, userId) {
@@ -93,7 +93,7 @@ export async function getFeedReactionByFeedId(feedId, userId) {
   ).then((snap) => {
     return snap?.docs?.map((res) => ({ id: res.id, ...res.data() }));
   });
-  // @ts-ignore
+
   let filterUserReactionOnFeed;
 
   currentUser.subscribe((userValue) => {
