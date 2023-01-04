@@ -9,6 +9,24 @@
   let images, imageURLs;
   let progressPercent = 0;
 
+  async function handleChangeBrowseImage(e) {
+    const options = {
+      maxSizeMB: 0.1,
+      useWebWorker: true,
+      fileType: "image/webp",
+      initialQuality: 0.5,
+      alwaysKeepResolution: true,
+      onProgress: (p) => (progressPercent = p),
+    };
+
+    const tempArr = [];
+    [...e.target.files].forEach((file) => {
+      tempArr.push(imageCompression(file, options));
+    });
+
+    images = await Promise.all(tempArr);
+  }
+
   async function handleStatusPublish() {
     if ($currentUser) {
       if (!statusText) return;
@@ -32,27 +50,10 @@
     }
   }
 
-  async function handleChangeBrowseImage(e) {
-    const options = {
-      maxSizeMB: 0.1,
-      useWebWorker: true,
-      fileType: "image/webp",
-      initialQuality: 0.5,
-      alwaysKeepResolution: true,
-      onProgress: (p) => (progressPercent = p),
-    };
-
-    const tempArr = [];
-    [...e.target.files].forEach((file) => {
-      tempArr.push(imageCompression(file, options));
-    });
-
-    images = await Promise.all(tempArr);
-  }
-
   function handleRemoveImageByIndex(index) {
     images?.splice(index, 1);
     images = [...images];
+    progressPercent = 0;
   }
 
   $: {
@@ -119,6 +120,8 @@
 
     <div class="w-fit h-10 flex items-center gap-5 p-2 rounded-2xl bg-white">
       <span>Add+</span>
+
+      <!-- browse photo in gallery button -->
       <label>
         <i>
           <svg
@@ -144,6 +147,8 @@
           on:change={handleChangeBrowseImage}
         />
       </label>
+
+      <!-- button camera -->
       <button>
         <i>
           <svg
