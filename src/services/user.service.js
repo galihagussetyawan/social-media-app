@@ -32,3 +32,5 @@ export async function addUser(value) {
     isPrivate: false,
   });
 }
+
+export async function searchUserByName() {}

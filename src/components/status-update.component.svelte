@@ -4,9 +4,11 @@
   import imageCompression from "browser-image-compression";
   import { postFeed } from "../services/feed.service";
   import { uploadImage, postImage } from "../services/images.service";
+  import Camera from "./camera/camera.component.svelte";
+  import { cameraState, images } from "../stores/global.store";
 
   let statusText;
-  let images, imageURLs;
+  let imageURLs;
   let progressPercent = 0;
 
   async function handleChangeBrowseImage(e) {
@@ -24,7 +26,28 @@
       tempArr.push(imageCompression(file, options));
     });
 
-    images = await Promise.all(tempArr);
+    // images = await Promise.all(tempArr);
+    images.set(await Promise.all(tempArr));
+  }
+
+  async function handleStartupCamera() {
+    // @ts-ignore
+    navigator.permissions.query({ name: "camera" }).then((status) => {
+      if (status.state === "denied") {
+        navigator.mediaDevices.getUserMedia({ video: true });
+        cameraState.set({
+          isShowCamera: false,
+          isPermission: false,
+        });
+      } else if (status.state === "prompt") {
+        navigator.mediaDevices.getUserMedia({ video: true });
+      } else if (status.state === "granted") {
+        cameraState.set({
+          isShowCamera: true,
+          isPermission: true,
+        });
+      }
+    });
   }
 
   async function handleStatusPublish() {
@@ -33,8 +56,8 @@
 
       const feedId = await postFeed(statusText);
 
-      if (images?.length > 0) {
-        images?.forEach(async (image) => {
+      if ($images?.length > 0) {
+        $images?.forEach(async (image) => {
           const uploadResult = await uploadImage(await image, await feedId);
           // @ts-ignore
           await postImage(
@@ -51,16 +74,20 @@
   }
 
   function handleRemoveImageByIndex(index) {
-    images?.splice(index, 1);
-    images = [...images];
+    // images?.splice(index, 1);
+    // images = [...images];
+    $images.splice(index, 1);
+    images.set($images);
     progressPercent = 0;
   }
 
   $: {
     let newImageUrls = [];
-    images?.forEach(async (image) => {
-      newImageUrls.push(URL.createObjectURL(image));
-    });
+    if ($images?.length > 0) {
+      $images?.forEach(async (image) => {
+        newImageUrls?.push(URL?.createObjectURL(image));
+      });
+    }
     imageURLs = newImageUrls;
   }
 </script>
@@ -149,7 +176,7 @@
       </label>
 
       <!-- button camera -->
-      <button>
+      <button on:click={handleStartupCamera}>
         <i>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -181,3 +208,7 @@
     >
   </div>
 </div>
+
+{#if $cameraState?.isShowCamera && $cameraState?.isPermission}
+  <svelte:component this={Camera} />
+{/if}
