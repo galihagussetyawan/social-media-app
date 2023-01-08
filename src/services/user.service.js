@@ -34,12 +34,12 @@ export async function addUser(value) {
   });
 }
 
-export async function searchUserByName(displayName) {
+export async function getUsersByName(displayName) {
   return await (
     await getDocs(
       query(
         collection(db, "users"),
-        where("displayName", "array-contains", displayName),
+        where("displayName", "==", displayName),
         limit(10)
       )
     )
