@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   getDocs,
+  limit,
   query,
   setDoc,
   where,
@@ -33,4 +34,14 @@ export async function addUser(value) {
   });
 }
 
-export async function searchUserByName() {}
+export async function searchUserByName(displayName) {
+  return await (
+    await getDocs(
+      query(
+        collection(db, "users"),
+        where("displayName", "array-contains", displayName),
+        limit(10)
+      )
+    )
+  ).docs.map((docSnap) => docSnap.data());
+}

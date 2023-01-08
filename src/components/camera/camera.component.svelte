@@ -17,7 +17,6 @@
       .getUserMedia({
         video: {
           aspectRatio: 9 / 16,
-          facingMode: "user",
         },
       })
       .then((stream) => {
