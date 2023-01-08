@@ -12,6 +12,7 @@
   } from "../services/follow-unfollow.service";
   import { afterUpdate, onMount } from "svelte";
   import ContainerTab from "../components/profile/tab/container.tab.component.svelte";
+  import LockedProfile from "../components/profile/locked-profile.component.svelte";
 
   let MainLayout,
     ProfilePicture,
@@ -103,7 +104,11 @@
       <svelte:component this={CountInformation} data={countInformationData} />
       <svelte:component this={AccountInteraction} {data} />
     </div>
+  {/if}
 
+  {#if !data?.isPrivate && !data?.isFollowing}
+    <LockedProfile />
+  {:else}
     <svelte:component this={ContainerTab} />
   {/if}
 </svelte:component>
