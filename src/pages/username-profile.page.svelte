@@ -11,14 +11,14 @@
     getFollowingCount,
   } from "../services/follow-unfollow.service";
   import { afterUpdate, onMount } from "svelte";
-  import ContainerTab from "../components/profile/tab/container.tab.component.svelte";
-  import LockedProfile from "../components/profile/locked-profile.component.svelte";
 
   let MainLayout,
     ProfilePicture,
     DescriptionInformation,
     CountInformation,
-    AccountInteraction;
+    AccountInteraction,
+    ContainerTab,
+    LockedProfile;
   let data, profileData, countInformationData;
   let isLoading = true;
 
@@ -42,6 +42,14 @@
 
   import("../components/profile/account-interaction.component.svelte").then(
     (res) => (AccountInteraction = res.default)
+  );
+
+  import("../components/profile/tab/container.tab.component.svelte").then(
+    (res) => (ContainerTab = res.default)
+  );
+
+  import("../components/profile/locked-profile.component.svelte").then(
+    (res) => (LockedProfile = res.default)
   );
 
   $: if ($currentUser?.username === $params?.username) {
@@ -107,7 +115,7 @@
   {/if}
 
   {#if !data?.isPrivate && !data?.isFollowing}
-    <LockedProfile />
+    <svelte:component this={LockedProfile} />
   {:else}
     <svelte:component this={ContainerTab} />
   {/if}
