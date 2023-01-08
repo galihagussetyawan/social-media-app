@@ -9,6 +9,7 @@ export async function handleSignWithGoogleAccount() {
   await signInWithPopup(auth, provider)
     .then(async (result) => {
       await addUser(result);
+      window.location.reload();
     })
     .catch((error) => error);
 }
