@@ -31,7 +31,11 @@
 
   <!-- image section -->
   {#if data?.images?.length > 0}
-    <svelte:component this={ImageCollectionCard} imagesList={data?.images} />
+    <svelte:component
+      this={ImageCollectionCard}
+      imagesList={data?.images}
+      feedId={data?.id}
+    />
   {/if}
 
   <svelte:component this={Reaction} {data} />

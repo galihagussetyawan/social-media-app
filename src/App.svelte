@@ -8,7 +8,9 @@
     Feed,
     ProtectedRoute,
     UsernameProfile,
-    EditProfile;
+    EditProfile,
+    Setting,
+    ImageViewer;
 
   import("./pages/home.pages.svelte").then((result) => (Home = result.default));
   import("./pages/search.page.svelte").then(
@@ -28,6 +30,10 @@
   import("./pages/edit-profile.page.svelte").then(
     (res) => (EditProfile = res.default)
   );
+  import("./pages/setting.page.svelte").then((res) => (Setting = res.default));
+  import("./pages/image-viewer.page.svelte").then(
+    (res) => (ImageViewer = res.default)
+  );
 </script>
 
 <Router>
@@ -36,10 +42,16 @@
   <Route path={"/register"} component={Register} />
   <Route path={"/status/:feedid"} component={Feed} />
   <Route path={"/:username"} component={UsernameProfile} />
+  <Route path={"/status/:feedid/image/:imageid"} component={ImageViewer} />
+
+  <!-- proteced routes -->
   <svelte:component this={ProtectedRoute} path={"/profile"}>
     <svelte:component this={Profile} />
   </svelte:component>
   <svelte:component this={ProtectedRoute} path={"/profile/edit"}>
     <svelte:component this={EditProfile} />
+  </svelte:component>
+  <svelte:component this={ProtectedRoute} path={"/profile/settings"}>
+    <svelte:component this={Setting} />
   </svelte:component>
 </Router>

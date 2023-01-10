@@ -1,14 +1,17 @@
 <script defer>
   import { LazyImage } from "svelte-lazy-image";
+  import { Link } from "svelte-navigator";
 
-  export let imagesList;
+  export let imagesList, feedId;
 </script>
 
 {#if imagesList.length === 1}
-  <LazyImage
-    src={imagesList[0]?.url}
-    class="aspect-[16/9] rounded-2xl object-cover object-center bg-gray-100"
-  />
+  <Link to={`/status/${feedId}/image/1`} state={imagesList}>
+    <LazyImage
+      src={imagesList[0]?.url}
+      class="aspect-[16/9] rounded-2xl object-cover object-center bg-gray-100"
+    />
+  </Link>
 {/if}
 
 {#if imagesList.length === 2}
