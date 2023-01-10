@@ -16,14 +16,18 @@
 
 {#if imagesList.length === 2}
   <div class="aspect-video grid grid-cols-2 gap-1">
-    <LazyImage
-      src={imagesList[0]?.url}
-      class="w-full h-full object-cover object-center rounded-2xl bg-gray-100"
-    />
-    <LazyImage
-      src={imagesList[1]?.url}
-      class="w-full h-full object-cover object-center rounded-2xl bg-gray-100"
-    />
+    <Link to={`/status/${feedId}/image/1`} state={imagesList}>
+      <LazyImage
+        src={imagesList[0]?.url}
+        class="w-full h-full object-cover object-center rounded-2xl bg-gray-100"
+      />
+    </Link>
+    <Link to={`/status/${feedId}/image/2`} state={imagesList}>
+      <LazyImage
+        src={imagesList[1]?.url}
+        class="w-full h-full object-cover object-center rounded-2xl bg-gray-100"
+      />
+    </Link>
   </div>
 {/if}
 

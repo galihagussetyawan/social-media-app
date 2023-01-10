@@ -1,21 +1,43 @@
 <script defer>
+  import { onMount } from "svelte";
   import { LazyImage } from "svelte-lazy-image";
   import { useLocation, useParams } from "svelte-navigator";
+  import { getFeedById } from "../services/feed.service";
 
   const location = useLocation();
   const params = useParams();
+
+  let imagesList;
+
+  onMount(async () => {
+    // check state imageslist from passing state
+    if (!$location?.state) {
+      imagesList = await (await getFeedById($params?.feedid))?.images;
+    } else {
+      imagesList = Object.keys($location?.state)?.map((key) => {
+        if (typeof $location.state[key] !== "object") return;
+        return $location.state[key];
+      });
+    }
+  });
 </script>
 
 <div
-  class="w-full h-screen relative flex items-center overflow-hidden bg-black"
+  class="w-full h-screen md:max-w-sm m-auto relative flex items-center overflow-hidden bg-black"
 >
-  <LazyImage src={$location?.state[0]?.url} alt="test" />
+  {#if imagesList}
+    <LazyImage
+      src={imagesList[Number($params?.imageid) - 1]?.url}
+      alt="test"
+      class="max-w-full w-full"
+    />
+  {/if}
 
   <!-- navigation images -->
-  {#if $location.state.length > 1}
+  {#if imagesList?.length > 2}
     <div class="absolute w-full px-5 flex justify-between text-white">
       <button
-        class="w-10 h-10 flex justify-center items-center rounded-2xl bg-opacity-20 bg-white"
+        class="w-10 h-10 flex justify-center items-center rounded-2xl bg-opacity-30 bg-gray-500"
       >
         <i>
           <svg
@@ -35,7 +57,7 @@
         </i>
       </button>
       <button
-        class="w-10 h-10 flex justify-center items-center rounded-2xl bg-opacity-20 bg-white"
+        class="w-10 h-10 flex justify-center items-center rounded-2xl bg-opacity-30 bg-gray-500"
       >
         <i>
           <svg
