@@ -60,17 +60,42 @@ export async function getFollowersCount(userId) {
 }
 
 export async function getFollowingByUserId(userId) {
+  const followingSnap = await getDocs(
+    collection(db, "users", userId, "following")
+  );
+
   return await Promise.all(
-    await (
-      await getDocs(collection(db, "users", userId, "following"))
-    ).docs.map(async (docSnap) => {
+    followingSnap.docs.map(async (docSnap) => {
+      const userSnap = await getDoc(docSnap?.data()?.user);
+
       return {
         id: docSnap?.id,
         isConfirm: docSnap.data()?.isConfirm,
         isFollowed: true,
         createdAt: docSnap.data()?.createdAt,
         updatedAt: docSnap.data()?.updatedAt,
-        user: await (await getDoc(docSnap?.data()?.user))?.data(),
+        user: await userSnap?.data(),
+      };
+    })
+  );
+}
+
+export async function getFollowersByUserId(userId) {
+  const followersSnap = await getDocs(
+    collection(db, "users", userId, "followers")
+  );
+
+  return await Promise.all(
+    followersSnap.docs.map(async (docSnap) => {
+      const userSnap = await getDoc(docSnap?.data()?.user);
+
+      return {
+        id: docSnap?.id,
+        isConfirm: docSnap.data()?.isConfirm,
+        isFollowed: await checkIsFollowed(userSnap?.id, userId),
+        createdAt: docSnap?.data()?.createdAt,
+        updatedAt: docSnap?.data()?.updatedAt,
+        user: await userSnap?.data(),
       };
     })
   );

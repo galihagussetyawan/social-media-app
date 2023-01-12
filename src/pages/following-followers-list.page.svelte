@@ -3,8 +3,10 @@
   import { useLocation, useMatch, useParams } from "svelte-navigator";
   import { pathname } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
-  import { getFollowingByUserId } from "../services/follow-unfollow.service";
-  import { each } from "svelte/internal";
+  import {
+    getFollowingByUserId,
+    getFollowersByUserId,
+  } from "../services/follow-unfollow.service";
 
   let MainLayout;
   let location = useLocation();
@@ -22,6 +24,8 @@
 
       if ($pathname === "following") {
         followingList = await getFollowingByUserId($currentUser?.uid);
+      } else {
+        followersList = await getFollowersByUserId($currentUser?.uid);
       }
     }
   });
@@ -29,6 +33,8 @@
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
   );
+
+  $: console.log(followersList);
 </script>
 
 <svelte:component this={MainLayout}>
