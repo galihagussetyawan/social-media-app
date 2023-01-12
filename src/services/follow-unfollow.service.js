@@ -74,7 +74,10 @@ export async function getFollowingByUserId(userId) {
         isFollowed: true,
         createdAt: docSnap.data()?.createdAt,
         updatedAt: docSnap.data()?.updatedAt,
-        user: await userSnap?.data(),
+        user: {
+          id: await userSnap?.id,
+          ...(await userSnap?.data()),
+        },
       };
     })
   );
@@ -95,7 +98,10 @@ export async function getFollowersByUserId(userId) {
         isFollowed: await checkIsFollowed(userSnap?.id, userId),
         createdAt: docSnap?.data()?.createdAt,
         updatedAt: docSnap?.data()?.updatedAt,
-        user: await userSnap?.data(),
+        user: {
+          id: await userSnap?.id,
+          ...(await userSnap?.data()),
+        },
       };
     })
   );
