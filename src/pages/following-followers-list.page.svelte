@@ -53,9 +53,8 @@
     // in public profile
     // path: '/:username/*following-followers'
     if ($params?.username) {
-      console.log("username profile");
-
       const user = await getUserByUsername($params?.username);
+
       if ($pathname === "following") {
         followingList = await getFollowingByUserId(user?.id);
       } else {
@@ -90,19 +89,21 @@
               <span>{data?.user?.displayName}</span>
               <span>@{data?.user?.username}</span>
             </div>
-            {#if data.isFollowed}
-              <button
-                class="text-center p-1 rounded-2xl text-gray-500 bg-gray-200"
-                on:click={() => handleUnfollow(data?.user?.id, index)}
-                >Unfollow</button
-              >
-            {:else}
-              <button
-                class="text-center p-1 rounded-2xl text-white bg-green-500"
-                on:click={() =>
-                  handleFollow(data?.user?.id, data?.user?.isPrivate, index)}
-                >Follow</button
-              >
+            {#if $currentUser?.uid !== data?.user?.id}
+              {#if data?.isFollowed}
+                <button
+                  class="text-center p-1 rounded-2xl text-gray-500 bg-gray-200"
+                  on:click={() => handleUnfollow(data?.user?.id, index)}
+                  >Unfollow</button
+                >
+              {:else}
+                <button
+                  class="text-center p-1 rounded-2xl text-white bg-green-500"
+                  on:click={() =>
+                    handleFollow(data?.user?.id, data?.user?.isPrivate, index)}
+                  >Follow</button
+                >
+              {/if}
             {/if}
           </li>
         {/each}
