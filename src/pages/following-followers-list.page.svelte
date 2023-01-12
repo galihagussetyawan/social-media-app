@@ -1,6 +1,6 @@
 <script defer>
   import { onMount } from "svelte";
-  import { navigate, useMatch, useParams } from "svelte-navigator";
+  import { navigate, useMatch, useParams, Link } from "svelte-navigator";
   import { LazyImage } from "svelte-lazy-image";
   import { pathname } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
@@ -85,10 +85,10 @@
               src={data?.user?.photoURL}
               class=" min-w-[40px] max-w-[40px] aspect-square rounded-2xl bg-gray-100"
             />
-            <div class="grid grid-cols-1">
+            <Link to={"/" + data?.user?.username} class="grid grid-cols-1">
               <span>{data?.user?.displayName}</span>
               <span>@{data?.user?.username}</span>
-            </div>
+            </Link>
             {#if $currentUser?.uid !== data?.user?.id}
               {#if data?.isFollowed}
                 <button
