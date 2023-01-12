@@ -11,14 +11,17 @@
     <p class="text-sm font-thin">Posts</p>
   </div>
   <Link
-    to={$location?.pathname + "?tab=followers"}
+    to={$location?.pathname + "/followers"}
     class="grid grid-cols-1 text-center"
   >
     <p class="font-semibold">{data?.followers}</p>
     <p class="text-sm font-thin">Followers</p>
   </Link>
-  <div class="grid grid-cols-1 text-center">
+  <Link
+    to={$location?.pathname + "/following"}
+    class="grid grid-cols-1 text-center"
+  >
     <p class="font-semibold">{data?.following}</p>
     <p class="text-sm font-thin">Following</p>
-  </div>
+  </Link>
 </div>

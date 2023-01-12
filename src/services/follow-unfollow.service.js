@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getCountFromServer,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -56,4 +57,21 @@ export async function getFollowersCount(userId) {
   return await (
     await getCountFromServer(collection(db, "users", userId, "followers"))
   ).data()?.count;
+}
+
+export async function getFollowingByUserId(userId) {
+  return await Promise.all(
+    await (
+      await getDocs(collection(db, "users", userId, "following"))
+    ).docs.map(async (docSnap) => {
+      return {
+        id: docSnap?.id,
+        isConfirm: docSnap.data()?.isConfirm,
+        isFollowed: true,
+        createdAt: docSnap.data()?.createdAt,
+        updatedAt: docSnap.data()?.updatedAt,
+        user: await (await getDoc(docSnap?.data()?.user))?.data(),
+      };
+    })
+  );
 }

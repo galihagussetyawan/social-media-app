@@ -10,7 +10,8 @@
     UsernameProfile,
     EditProfile,
     Setting,
-    ImageViewer;
+    ImageViewer,
+    FollowingFollowers;
 
   import("./pages/home.pages.svelte").then((result) => (Home = result.default));
   import("./pages/search.page.svelte").then(
@@ -34,6 +35,9 @@
   import("./pages/image-viewer.page.svelte").then(
     (res) => (ImageViewer = res.default)
   );
+  import("./pages/following-followers-list.page.svelte").then(
+    (res) => (FollowingFollowers = res.default)
+  );
 </script>
 
 <Router>
@@ -43,6 +47,8 @@
   <Route path={"/status/:feedid"} component={Feed} />
   <Route path={"/:username"} component={UsernameProfile} />
   <Route path={"/status/:feedid/image/:imageid"} component={ImageViewer} />
+  <Route path={"/:username/following"} component={FollowingFollowers} />
+  <Route path={"/:username/followers"} component={FollowingFollowers} />
 
   <!-- proteced routes -->
   <svelte:component this={ProtectedRoute} path={"/profile"}>
@@ -53,5 +59,12 @@
   </svelte:component>
   <svelte:component this={ProtectedRoute} path={"/profile/settings"}>
     <svelte:component this={Setting} />
+  </svelte:component>
+
+  <svelte:component this={ProtectedRoute} path={"/profile/following"}>
+    <svelte:component this={FollowingFollowers} />
+  </svelte:component>
+  <svelte:component this={ProtectedRoute} path={"/profile/followers"}>
+    <svelte:component this={FollowingFollowers} />
   </svelte:component>
 </Router>
