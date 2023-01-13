@@ -1,10 +1,9 @@
 <script defer>
   import { Link, useParams } from "svelte-navigator";
-  import ImageCollectionCard from "../images/image-collection-card.component.svelte";
 
   export let data;
 
-  let Reaction, ProfilePhoto;
+  let Reaction, ProfilePhoto, ImageCollectionCard, CountFeedInfo;
   let params = useParams();
 
   import("../reaction.component.svelte").then(
@@ -12,6 +11,12 @@
   );
   import("./profile-photo.component.svelte").then(
     (res) => (ProfilePhoto = res.default)
+  );
+  import("../images/image-collection-card.component.svelte").then(
+    (res) => (ImageCollectionCard = res.default)
+  );
+  import("./count-feed-info.component.svelte").then(
+    (res) => (CountFeedInfo = res.default)
   );
 </script>
 
@@ -39,5 +44,5 @@
   {/if}
 
   <svelte:component this={Reaction} {data} />
-  <div>Comment</div>
+  <svelte:component this={CountFeedInfo} />
 </div>
