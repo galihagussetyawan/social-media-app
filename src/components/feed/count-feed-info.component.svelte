@@ -1,4 +1,4 @@
-<div class="grid grid-cols-[30%_30%_30%_10%]">
+<div class="grid grid-cols-[30%_30%_30%_10%] text-gray-500">
   <div class="flex items-center gap-2">
     <i>
       <svg
