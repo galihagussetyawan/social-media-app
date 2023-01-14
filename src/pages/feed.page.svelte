@@ -4,11 +4,8 @@
   import { getFeedById } from "../services/feed.service";
   import { useParams } from "svelte-navigator";
   import { feedsData } from "../stores/feed.store";
-  import FeedCard from "../components/feed/feed-card.component.svelte";
 
-  let MainLayout, LoadingScreenCircle;
-  let isLoading = true;
-  let feedDetail;
+  let MainLayout, LoadingScreenCircle, FeedCard, CommentList;
 
   import("../layouts/main.layout.svelte").then(
     (res) => (MainLayout = res.default)
@@ -16,8 +13,17 @@
   import("../components/skeleton/loading-screen-circle.component.svelte").then(
     (res) => (LoadingScreenCircle = res.default)
   );
+  import("../components/feed/comments/comment-list.component.svelte").then(
+    (res) => (CommentList = res.default)
+  );
+  import("../components/feed/feed-card.component.svelte").then(
+    (res) => (FeedCard = res.default)
+  );
 
+  let isLoading = true;
+  let feedDetail;
   const params = useParams();
+  pathname.set("status");
 
   onMount(() => {
     if ($feedsData?.some((data) => data.id.includes($params.feedid))) {
@@ -30,14 +36,15 @@
       });
     }
   });
-
-  pathname.set("Status");
 </script>
 
 <svelte:component this={MainLayout}>
   {#if isLoading}
     <svelte:component this={LoadingScreenCircle} />
   {:else}
-    <FeedCard data={feedDetail} />
+    <div class="space-y-5">
+      <svelte:component this={FeedCard} data={feedDetail} />
+      <svelte:component this={CommentList} feedId={feedDetail?.id} />
+    </div>
   {/if}
 </svelte:component>
