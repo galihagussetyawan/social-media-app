@@ -1,11 +1,12 @@
-<script>
+<script defer>
+  import { afterUpdate, onMount } from "svelte";
+  import { navigate } from "svelte-navigator";
   import ReplyComment from "./reply-comment.component.svelte";
   import { currentUser } from "../../../stores/auth.store";
   import {
     addComment,
     getCommentsByFeedId,
   } from "../../../services/comment.service";
-  import { afterUpdate, onMount } from "svelte";
 
   export let feedId;
 
@@ -14,6 +15,7 @@
   let isUpdate = false;
 
   function handleToggleAddComment() {
+    if (!$currentUser?.uid) return navigate("/register");
     isOpenAddComment = !isOpenAddComment;
   }
 
@@ -81,7 +83,7 @@
             alt="test"
             class="min-w-[40px] max-w-[40px] max-h-[40px] min-h-[40px]s aspect-square rounded-2xl bg-gray-200"
           />
-          <div class=" w-full space-y-2">
+          <div class="w-full space-y-2">
             <div>
               <div class="flex justify-between">
                 <div>
@@ -95,7 +97,7 @@
               <!-- <div>info</div> -->
             </div>
             <div>
-              <span class="text-lg">{data?.text}</span>
+              <p class="text-lg py-3">{data?.text}</p>
             </div>
 
             <!-- reply section -->
