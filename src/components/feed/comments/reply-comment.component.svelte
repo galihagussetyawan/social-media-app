@@ -1,7 +1,11 @@
 <script defer>
+  import { navigate } from "svelte-navigator";
+  import { currentUser } from "../../../stores/auth.store";
+
   let isOpenReplyInput = false;
 
   function handleToggleReplyInput() {
+    if (!$currentUser?.uid) return navigate("/register");
     isOpenReplyInput = !isOpenReplyInput;
   }
 </script>
