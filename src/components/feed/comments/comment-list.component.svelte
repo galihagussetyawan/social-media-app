@@ -8,7 +8,7 @@
     getCommentsByFeedId,
   } from "../../../services/comment.service";
 
-  export let feedId;
+  export let data;
 
   let commentText, commentsList;
   let isOpenAddComment = false;
@@ -21,23 +21,23 @@
 
   function handleAddComment() {
     if (commentText) {
-      addComment(commentText, feedId, $currentUser?.uid);
+      addComment(commentText, data?.id, $currentUser?.uid);
       isUpdate = true;
     }
   }
 
   onMount(async () => {
-    commentsList = await getCommentsByFeedId(feedId);
+    commentsList = await getCommentsByFeedId(data?.id);
   });
 
   afterUpdate(async () => {
     if (isUpdate) {
-      commentsList = await getCommentsByFeedId(feedId);
+      commentsList = await getCommentsByFeedId(data?.id);
       isUpdate = false;
     }
   });
 
-  //  $: console.log(commentsList);
+  // $: console.log(commentsList);
 </script>
 
 <div class=" mx-5 m-auto space-y-3">
@@ -83,7 +83,7 @@
             alt="test"
             class="min-w-[40px] max-w-[40px] max-h-[40px] min-h-[40px]s aspect-square rounded-2xl bg-gray-200"
           />
-          <div class="w-full space-y-2">
+          <div class="w-full">
             <div>
               <div class="flex justify-between">
                 <div>
@@ -101,7 +101,7 @@
             </div>
 
             <!-- reply section -->
-            <ReplyComment />
+            <ReplyComment {data} />
             <!-- end of reply section -->
           </div>
         </li>
