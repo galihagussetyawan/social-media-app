@@ -74,7 +74,7 @@
   {#if isShowChildren && childrenData}
     <div class="py-2">
       {#each childrenData as data}
-        <div class="flex gap-2 mx-5 pl-5 border-l border-gray-400">
+        <div class="flex gap-2 mx-5 pl-5 py-1 border-l border-gray-400">
           <img
             src={data?.user?.photoURL}
             alt="test"
