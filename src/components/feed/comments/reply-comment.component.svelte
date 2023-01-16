@@ -3,9 +3,14 @@
   import { replyComment } from "../../../services/comment.service";
   import { currentUser } from "../../../stores/auth.store";
 
-  export let feedId, commentId, rootCommentId, commentChildren, isShowChildren;
-  let isOpenReplyInput = false;
+  export let feedId,
+    commentId,
+    rootCommentId,
+    commentChildren,
+    isShowChildren,
+    isLoadingChildren;
 
+  let isOpenReplyInput = false;
   let commentText;
 
   function handleToggleReplyInput() {
@@ -68,9 +73,14 @@
       </button>
       {#if commentChildren?.length > 0}
         <!-- <slot name="show-reply" /> -->
-        <button class=" text-gray-500" on:click={() => (isShowChildren = true)}
-          >Lihat Balasan</button
-        >
+        {#if isLoadingChildren}
+          <span class=" text-gray-500">Memuat...</span>
+        {:else}
+          <button
+            class=" text-gray-500"
+            on:click={() => (isShowChildren = true)}>Lihat Balasan</button
+          >
+        {/if}
       {/if}
     </div>
   {/if}

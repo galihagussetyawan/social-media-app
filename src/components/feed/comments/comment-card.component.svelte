@@ -6,17 +6,20 @@
   );
 
   export let feedData, commentData;
-
   let ReplyComment;
-  let isShowChildren = false;
+
   let childrenData;
+  let isShowChildren = false;
+  let isLoadingChildren = false;
 
   $: {
     if (isShowChildren) {
+      isLoadingChildren = true;
       if (commentData?.children) {
-        getChildrenComments(feedData?.id, commentData?.children).then(
-          (res) => (childrenData = res)
-        );
+        getChildrenComments(feedData?.id, commentData?.children).then((res) => {
+          childrenData = res;
+          isLoadingChildren = false;
+        });
       }
     }
   }
@@ -55,6 +58,7 @@
         rootCommentId={commentData?.id}
         commentChildren={commentData?.children}
         bind:isShowChildren
+        bind:isLoadingChildren
       />
     </div>
     <!-- displayname, username, comment text, reply comment -->
@@ -106,6 +110,7 @@
               rootCommentId={commentData?.id}
               commentChildren={data?.children}
               bind:isShowChildren
+              bind:isLoadingChildren
             />
           </div>
           <!-- displayname, username, comment text, reply comment -->
