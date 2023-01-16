@@ -43,10 +43,6 @@
     />
   {/if}
 
-  <svelte:component this={Reaction} {data} />
-  <svelte:component
-    this={CountFeedInfo}
-    feedId={data?.id}
-    feedText={data?.text}
-  />
+  <svelte:component this={Reaction} bind:data />
+  <svelte:component this={CountFeedInfo} bind:data />
 </div>

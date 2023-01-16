@@ -1,11 +1,11 @@
 <script defer>
-  export let feedId, feedText;
+  export let data;
 
   function handleShare() {
     const shareData = {
       title: "Status Share",
-      text: feedText,
-      url: window?.location?.origin + "/" + feedId,
+      text: data?.text,
+      url: window?.location?.origin + "/" + data?.id,
     };
 
     try {
@@ -54,7 +54,7 @@
         />
       </svg>
     </i>
-    <span>1k</span>
+    <span>{data?.reactions?.count}</span>
   </div>
 
   <div class="flex items-center gap-2">
