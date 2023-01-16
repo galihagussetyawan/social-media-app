@@ -1,3 +1,21 @@
+<script defer>
+  export let feedId, feedText;
+
+  function handleShare() {
+    const shareData = {
+      title: "Status Share",
+      text: feedText,
+      url: window?.location?.origin + "/" + feedId,
+    };
+
+    try {
+      navigator.share(shareData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+</script>
+
 <div class="grid grid-cols-[30%_30%_30%_10%] text-gray-500">
   <div class="flex items-center gap-2">
     <i>
@@ -59,7 +77,7 @@
     <span>1k</span>
   </div>
 
-  <button>
+  <button on:click={handleShare}>
     <i>
       <svg
         xmlns="http://www.w3.org/2000/svg"
