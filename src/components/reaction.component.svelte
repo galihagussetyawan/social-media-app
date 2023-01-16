@@ -15,31 +15,26 @@
     if (!$currentUser) {
       navigate("/register");
     } else {
-      if (data?.reactions?.filterUserReaction) {
-        if (data?.reactions?.filterUserReaction?.symbol === symbol) {
-          deleteReactionfeed(
-            data?.id,
-            data?.reactions?.filterUserReaction?.id
-          ).then((res) => {
-            data.reactions.filterUserReaction = null;
-            data.reactions.count = data?.reactions?.count - 1;
+      if (data?.reaction?.id) {
+        if (data?.reaction?.symbol === symbol) {
+          deleteReactionfeed(data?.id, data?.reaction?.id).then((res) => {
+            data.reaction = null;
+            data.count.reaction = data?.count?.reaction - 1;
           });
         } else {
-          updateReactionFeed(
-            data?.id,
-            data?.reactions?.filterUserReaction?.id,
-            symbol
-          ).then((res) => {
-            data.reactions.filterUserReaction.symbol = symbol;
-          });
+          updateReactionFeed(data?.id, data?.reaction?.id, symbol).then(
+            (res) => {
+              data.reaction.symbol = symbol;
+            }
+          );
         }
       } else {
         addReactionFeed(data?.id, $currentUser?.uid, symbol).then((res) => {
-          data.reactions.filterUserReaction = {
+          data.reaction = {
             id: res,
             symbol: symbol,
           };
-          data.reactions.count = data.reactions.count + 1;
+          data.count.reaction = data?.count?.reaction + 1;
         });
       }
     }
@@ -81,15 +76,13 @@
   <div class="grid grid-cols-7 gap-1">
     <button
       class={`aspect-square rounded-2xl ${
-        data?.reactions?.filterUserReaction?.symbol === 1 &&
-        "border-2 bg-green-200 border-[#01DC14]"
+        data?.reaction?.symbol === 1 && "border-2 bg-green-200 border-[#01DC14]"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(1)}>😎</button
     >
     <button
       class={` aspect-square rounded-2xl ${
-        data?.reactions?.filterUserReaction?.symbol === 2 &&
-        "border-2 bg-green-200 border-[#01DC14]"
+        data?.reaction?.symbol === 2 && "border-2 bg-green-200 border-[#01DC14]"
       } bg-gray-100`}
       on:click={() => handleAddReactionFeed(2)}>😬</button
     >

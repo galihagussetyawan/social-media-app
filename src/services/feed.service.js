@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { getAllImages } from "./images.service";
+import { getCountCommentsByFeedId } from "./comment.service";
 
 let user, geolocation;
 
@@ -42,8 +43,12 @@ export async function getFeedById(feedId) {
     ...feedSnap?.data(),
     user: userSnap?.data(),
     // @ts-ignore
-    reactions: await getFeedReactionByFeedId(feedSnap?.id),
+    reaction: await checkIsReaction(feedSnap?.id),
     images: await getAllImages(feedSnap?.id),
+    count: {
+      reaction: await getCountReactionByFeedId(feedSnap?.id),
+      comment: await getCountCommentsByFeedId(feedSnap?.id),
+    },
   });
 }
 
@@ -62,13 +67,18 @@ export async function getFeedsByUserId(userId) {
         ...snapshot?.data(),
         user: userSnap?.data(),
         // @ts-ignore
-        reactions: await getFeedReactionByFeedId(snapshot?.id, userSnap?.id),
+        reaction: await checkIsReaction(snapshot?.id),
         images: await getAllImages(snapshot?.id),
+        count: {
+          reaction: await getCountReactionByFeedId(snapshot?.id),
+          comment: await getCountCommentsByFeedId(snapshot?.id),
+        },
       };
     })
   );
 }
 
+//CRUD REACTIONS
 export async function addReactionFeed(feedId, userId, symbol) {
   return await addDoc(collection(db, "feeds", feedId, "reactions"), {
     userId,
@@ -88,30 +98,33 @@ export async function deleteReactionfeed(feedId, reactionId) {
   await deleteDoc(doc(db, "feeds", feedId, "reactions", reactionId));
 }
 
-export async function getFeedReactionByFeedId(feedId) {
-  const reactionTotal = await getCountFromServer(
+export async function getCountReactionByFeedId(feedId) {
+  const snapCountReaction = await getCountFromServer(
     collection(db, "feeds", feedId, "reactions")
-  ).then((snap) => snap.data());
-  const reactionFeedUserList = await getDocs(
-    collection(db, "feeds", feedId, "reactions")
-  ).then((snap) => {
-    return snap?.docs?.map((res) => ({ id: res.id, ...res.data() }));
-  });
+  );
 
-  let filterUserReactionOnFeed;
+  return snapCountReaction?.data()?.count;
+}
 
-  currentUser.subscribe((userValue) => {
-    if (userValue?.uid) {
-      filterUserReactionOnFeed = reactionFeedUserList.find(
+export async function checkIsReaction(feedId) {
+  let user;
+
+  currentUser.subscribe((value) => (user = value));
+  // @ts-ignore
+  if (user?.uid) {
+    const snapReaction = await getDocs(
+      query(
+        collection(db, "feeds", feedId, "reactions"),
         // @ts-ignore
-        (data) => data?.userId === userValue?.uid
-      );
-    }
-  });
+        where("userId", "==", user?.uid)
+      )
+    );
 
-  return {
-    ...reactionTotal,
-    userList: reactionFeedUserList,
-    filterUserReaction: filterUserReactionOnFeed,
-  };
+    return {
+      id: snapReaction.docs.map((docSnap) => docSnap?.id)[0],
+      ...snapReaction.docs.map((docSnap) => docSnap.data())[0],
+    };
+  }
+
+  return null;
 }

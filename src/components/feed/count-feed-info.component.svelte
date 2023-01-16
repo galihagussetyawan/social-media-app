@@ -34,7 +34,7 @@
         />
       </svg>
     </i>
-    <span>1k</span>
+    <span>{data?.count?.comment}</span>
   </div>
 
   <div class="flex items-center gap-2">
@@ -54,7 +54,7 @@
         />
       </svg>
     </i>
-    <span>{data?.reactions?.count}</span>
+    <span>{data?.count?.reaction}</span>
   </div>
 
   <div class="flex items-center gap-2">

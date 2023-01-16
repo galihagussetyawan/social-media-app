@@ -13,8 +13,12 @@
   } from "firebase/firestore";
   import { db } from "../config/firebase";
   import FeedCardSkeleton from "./skeleton/feed-card-skeleton.component.svelte";
-  import { getFeedReactionByFeedId } from "../services/feed.service";
+  import {
+    checkIsReaction,
+    getCountReactionByFeedId,
+  } from "../services/feed.service";
   import { getAllImages } from "../services/images.service";
+  import { getCountCommentsByFeedId } from "../services/comment.service";
 
   onMount(async () => {
     currentGeolocation.subscribe(async (geoValue) => {
@@ -45,12 +49,18 @@
             return await Promise.all(
               feedSnap.docs.map(async (docSnap) => {
                 const userSnap = await getDoc(docSnap.data().userId);
+
                 return {
                   id: docSnap.id,
                   ...docSnap.data(),
                   user: await userSnap.data(),
-                  reactions: await getFeedReactionByFeedId(docSnap?.id),
+                  // reactions: await getFeedReactionByFeedId(docSnap?.id),
+                  reaction: await checkIsReaction(docSnap?.id),
                   images: await getAllImages(docSnap?.id),
+                  count: {
+                    reaction: await getCountReactionByFeedId(docSnap?.id),
+                    comment: await getCountCommentsByFeedId(docSnap?.id),
+                  },
                 };
               })
             );
