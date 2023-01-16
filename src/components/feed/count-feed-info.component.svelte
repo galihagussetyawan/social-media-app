@@ -5,7 +5,7 @@
     const shareData = {
       title: "Status Share",
       text: data?.text,
-      url: window?.location?.origin + "/" + data?.id,
+      url: window?.location?.origin + "/status/" + data?.id,
     };
 
     try {
