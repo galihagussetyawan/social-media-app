@@ -1,5 +1,4 @@
 <script defer>
-  import { afterUpdate, onMount } from "svelte";
   import { getChildrenComments } from "../../../services/comment.service";
 
   import("./reply-comment.component.svelte").then(
@@ -12,10 +11,6 @@
   let isShowChildren = false;
   let childrenData;
 
-  async function handleShowChildren() {
-    isShowChildren = true;
-  }
-
   $: {
     if (isShowChildren) {
       if (commentData?.children) {
@@ -25,8 +20,6 @@
       }
     }
   }
-
-  // $: console.log(childrenData);
 </script>
 
 <div class="py-2">
