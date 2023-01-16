@@ -3,9 +3,9 @@
   import { replyComment } from "../../../services/comment.service";
   import { currentUser } from "../../../stores/auth.store";
 
-  export let feedId, commentId, rootCommentId, commentChildren;
-
+  export let feedId, commentId, rootCommentId, commentChildren, isShowChildren;
   let isOpenReplyInput = false;
+
   let commentText;
 
   function handleToggleReplyInput() {
@@ -67,7 +67,10 @@
         <span>Balas</span>
       </button>
       {#if commentChildren?.length > 0}
-        <slot name="show-reply" />
+        <!-- <slot name="show-reply" /> -->
+        <button class=" text-gray-500" on:click={() => (isShowChildren = true)}
+          >Lihat Balasan</button
+        >
       {/if}
     </div>
   {/if}

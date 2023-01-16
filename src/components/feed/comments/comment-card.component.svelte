@@ -1,20 +1,32 @@
 <script defer>
+  import { afterUpdate, onMount } from "svelte";
   import { getChildrenComments } from "../../../services/comment.service";
-  import ReplyComment from "./reply-comment.component.svelte";
+
+  import("./reply-comment.component.svelte").then(
+    (res) => (ReplyComment = res?.default)
+  );
 
   export let feedData, commentData;
+
+  let ReplyComment;
   let isShowChildren = false;
   let childrenData;
 
   async function handleShowChildren() {
-    if (commentData?.children) {
-      childrenData = await getChildrenComments(
-        feedData?.id,
-        commentData?.children
-      );
-    }
     isShowChildren = true;
   }
+
+  $: {
+    if (isShowChildren) {
+      if (commentData?.children) {
+        getChildrenComments(feedData?.id, commentData?.children).then(
+          (res) => (childrenData = res)
+        );
+      }
+    }
+  }
+
+  // $: console.log(childrenData);
 </script>
 
 <div class="py-2">
@@ -43,18 +55,14 @@
         <p class="text-lg py-3">{commentData?.text}</p>
       </div>
 
-      <ReplyComment
+      <svelte:component
+        this={ReplyComment}
         feedId={feedData?.id}
         commentId={commentData?.id}
         rootCommentId={commentData?.id}
         commentChildren={commentData?.children}
-      >
-        <button
-          slot="show-reply"
-          class=" text-gray-500"
-          on:click={handleShowChildren}>Lihat Balasan</button
-        >
-      </ReplyComment>
+        bind:isShowChildren
+      />
     </div>
     <!-- displayname, username, comment text, reply comment -->
   </div>
@@ -98,18 +106,14 @@
               <p class="text-lg py-3">{data?.text}</p>
             </div>
 
-            <ReplyComment
+            <svelte:component
+              this={ReplyComment}
               feedId={feedData?.id}
               commentId={data?.id}
               rootCommentId={commentData?.id}
               commentChildren={data?.children}
-            >
-              <button
-                slot="show-reply"
-                class=" text-gray-500"
-                on:click={handleShowChildren}>Lihat Balasan</button
-              >
-            </ReplyComment>
+              bind:isShowChildren
+            />
           </div>
           <!-- displayname, username, comment text, reply comment -->
         </div>
