@@ -44,7 +44,7 @@
   {:else}
     <div class="space-y-5">
       <svelte:component this={FeedCard} data={feedDetail} />
-      <svelte:component this={CommentList} feedId={feedDetail?.id} />
+      <svelte:component this={CommentList} data={feedDetail} />
     </div>
   {/if}
 </svelte:component>

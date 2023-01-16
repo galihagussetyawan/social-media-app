@@ -1,12 +1,12 @@
 <script defer>
   import { afterUpdate, onMount } from "svelte";
   import { navigate } from "svelte-navigator";
-  import ReplyComment from "./reply-comment.component.svelte";
   import { currentUser } from "../../../stores/auth.store";
   import {
     addComment,
     getCommentsByFeedId,
   } from "../../../services/comment.service";
+  import CommentCard from "./comment-card.component.svelte";
 
   export let data;
 
@@ -74,37 +74,11 @@
   {/if}
   <!-- end of input add comment section -->
 
+  <!-- comments list card -->
   {#if commentsList && commentsList?.length > 0}
     <ul class="rounded-2xl divide-y bg-white">
-      {#each commentsList as data}
-        <li class="flex gap-2 p-5">
-          <img
-            src={data?.user?.photoURL}
-            alt="test"
-            class="min-w-[40px] max-w-[40px] max-h-[40px] min-h-[40px]s aspect-square rounded-2xl bg-gray-200"
-          />
-          <div class="w-full">
-            <div>
-              <div class="flex justify-between">
-                <div>
-                  <span class="font-semibold uppercase"
-                    >{data?.user?.displayName}</span
-                  >
-                  <span class="text-gray-500">@{data?.user?.username}</span>
-                </div>
-                <span class="text-gray-500">1s</span>
-              </div>
-              <!-- <div>info</div> -->
-            </div>
-            <div>
-              <p class="text-lg py-3">{data?.text}</p>
-            </div>
-
-            <!-- reply section -->
-            <ReplyComment {data} />
-            <!-- end of reply section -->
-          </div>
-        </li>
+      {#each commentsList as commentData}
+        <CommentCard feedData={data} {commentData} />
       {/each}
     </ul>
   {/if}
