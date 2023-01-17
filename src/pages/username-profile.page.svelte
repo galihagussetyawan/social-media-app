@@ -114,7 +114,7 @@
     </div>
   {/if}
 
-  {#if !data?.isPrivate && !data?.isFollowing}
+  {#if data?.isPrivate || !data?.isFollowing}
     <svelte:component this={LockedProfile} />
   {:else}
     <svelte:component this={ContainerTab} />
