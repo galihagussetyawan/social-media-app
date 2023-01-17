@@ -22,5 +22,6 @@ export async function handleLogout() {
   await signOut(auth).then((res) => {
     currentUser.set();
     window.location.reload();
+    window.location.href = "/";
   });
 }
