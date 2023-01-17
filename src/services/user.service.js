@@ -2,6 +2,7 @@ import { db } from "../config/firebase";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   limit,
   query,
@@ -9,6 +10,11 @@ import {
   where,
 } from "firebase/firestore";
 import { generateFromEmail } from "unique-username-generator";
+
+export async function getUserById(userId) {
+  const userSnap = await getDoc(doc(db, "users", userId));
+  return userSnap?.data();
+}
 
 export async function getUserByUsername(username) {
   const userSnap = await getDocs(

@@ -1,8 +1,8 @@
 import { db } from "../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
-export async function updatePrivateAccount(userId, isPrivate) {
-  await setDoc(doc(db, "users", userId), {
+export async function updatePrivateAccount(currentUserId, isPrivate) {
+  await updateDoc(doc(db, "users", currentUserId), {
     isPrivate: isPrivate,
   });
 }
