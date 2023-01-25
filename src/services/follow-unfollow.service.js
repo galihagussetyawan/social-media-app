@@ -86,19 +86,32 @@ export async function checkIsConfirm(followUserId, currentUserId) {
 
 export async function getFollowingCount(userId) {
   return await (
-    await getCountFromServer(collection(db, "users", userId, "following"))
+    await getCountFromServer(
+      query(
+        collection(db, "users", userId, "following"),
+        where("isConfirm", "==", true)
+      )
+    )
   ).data()?.count;
 }
 
 export async function getFollowersCount(userId) {
   return await (
-    await getCountFromServer(collection(db, "users", userId, "followers"))
+    await getCountFromServer(
+      query(
+        collection(db, "users", userId, "followers"),
+        where("isConfirm", "==", true)
+      )
+    )
   ).data()?.count;
 }
 
 export async function getFollowingByUserId(userId) {
   const followingSnap = await getDocs(
-    collection(db, "users", userId, "following")
+    query(
+      collection(db, "users", userId, "following"),
+      where("isConfirm", "==", true)
+    )
   );
 
   return await Promise.all(
@@ -122,7 +135,10 @@ export async function getFollowingByUserId(userId) {
 
 export async function getFollowersByUserId(userId) {
   const followersSnap = await getDocs(
-    collection(db, "users", userId, "followers")
+    query(
+      collection(db, "users", userId, "followers"),
+      where("isConfirm", "==", true)
+    )
   );
 
   return await Promise.all(
