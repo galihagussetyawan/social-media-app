@@ -12,12 +12,12 @@
   function handleAcceptRequestFollowing() {
     acceptRequestFollowing(data?.from?.id, $currentUser?.uid);
     handleReadNotification();
-    data.isRead = true;
+    data = null;
   }
 </script>
 
 {#if data?.type === "request follow"}
-  <li class="flex items-center gap-3 py-3">
+  <li class="flex justify-between items-center gap-3 p-3 bg-white">
     <p on:click={handleReadNotification}>
       <span class="capitalize font-semibold">{data?.from?.displayName}</span> meminta
       persetujuan untuk mengikuti anda
@@ -30,7 +30,7 @@
 {/if}
 
 {#if data?.type === "following"}
-  <li class="flex items-center gap-3 py-3">
+  <li class="flex justify-between items-center gap-3 p-3 bg-white">
     <p on:click={handleReadNotification}>
       <span class="capitalize font-semibold">{data?.from?.displayName}</span> telah
       mengikuti anda

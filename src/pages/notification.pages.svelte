@@ -45,9 +45,11 @@
   {#if isLoading}
     <svelte:component this={CircleSpinner} />
   {:else if notificationList?.length > 0}
-    <ul class="mx-5 m-auto p-5 rounded-2xl divide-y bg-white">
+    <ul class=" rounded-2xl divide-y mx-5 overflow-hidden">
       {#each notificationList as data}
-        <svelte:component this={NotificationCard} bind:data />
+        {#if !data?.isRead}
+          <svelte:component this={NotificationCard} bind:data />
+        {/if}
       {/each}
     </ul>
   {:else}
