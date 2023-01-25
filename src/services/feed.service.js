@@ -65,7 +65,10 @@ export async function getFeedsByUserId(userId) {
       return {
         id: snapshot?.id,
         ...snapshot?.data(),
-        user: userSnap?.data(),
+        user: {
+          id: userSnap?.id,
+          ...userSnap?.data(),
+        },
         // @ts-ignore
         reaction: await checkIsReaction(snapshot?.id),
         images: await getAllImages(snapshot?.id),

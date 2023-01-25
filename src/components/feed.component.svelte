@@ -53,8 +53,10 @@
                 return {
                   id: docSnap.id,
                   ...docSnap.data(),
-                  user: await userSnap.data(),
-                  // reactions: await getFeedReactionByFeedId(docSnap?.id),
+                  user: {
+                    id: await userSnap?.id,
+                    ...userSnap?.data(),
+                  },
                   reaction: await checkIsReaction(docSnap?.id),
                   images: await getAllImages(docSnap?.id),
                   count: {
