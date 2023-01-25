@@ -50,7 +50,10 @@
         </i>
         <span>Profile</span>
       </Link>
-      <button class="flex items-center gap-2 font-semibold">
+      <Link
+        to={"/profile/notifications"}
+        class="flex items-center gap-2 font-semibold"
+      >
         <i>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +71,7 @@
           </svg>
         </i>
         <span>Notifications</span>
-      </button>
+      </Link>
       <Link
         to={"/profile/settings"}
         class="flex items-center gap-2 font-semibold"

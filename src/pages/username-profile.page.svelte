@@ -9,6 +9,7 @@
     checkIsFollowed,
     getFollowersCount,
     getFollowingCount,
+    checkIsConfirm,
   } from "../services/follow-unfollow.service";
   import { afterUpdate, onMount } from "svelte";
 
@@ -69,6 +70,10 @@
     data.isFollowing = !$currentUser
       ? false
       : await checkIsFollowed(await data?.id, await $currentUser?.uid);
+    // @ts-ignore
+    data.isConfirm = !$currentUser
+      ? false
+      : await checkIsConfirm(await data?.id, await $currentUser?.uid);
     countInformationData = {
       posts: 0,
       followers: await getFollowersCount(data?.id),
@@ -114,7 +119,7 @@
     </div>
   {/if}
 
-  {#if data?.isPrivate && !data?.isFollowing}
+  {#if data?.isPrivate && !data?.isConfirm}
     <svelte:component this={LockedProfile} />
   {:else}
     <svelte:component this={ContainerTab} />

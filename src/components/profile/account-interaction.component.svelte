@@ -37,10 +37,18 @@
   {:else}
     <!-- follow and unfollow button -->
     {#if data?.isFollowing}
-      <button
-        class="w-5/12 h-[40px] rounded-2xl text-black bg-gray-300"
-        on:click={handleUnfollow}>Unfollow</button
-      >
+      {#if data?.isConfirm}
+        <button
+          class="w-5/12 h-[40px] rounded-2xl text-black bg-gray-300"
+          on:click={handleUnfollow}>Unfollow</button
+        >
+        <!-- request accepted -->
+      {:else}
+        <button
+          class="w-5/12 h-[40px] rounded-2xl text-black bg-gray-300"
+          on:click={handleUnfollow}>Request</button
+        >
+      {/if}
     {:else}
       <button
         class="w-5/12 h-[40px] rounded-2xl text-white

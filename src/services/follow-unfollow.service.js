@@ -8,8 +8,13 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
+import {
+  followingNotification,
+  requestFollowNotification,
+} from "./notification.service";
 
 export async function follow(followUserId, followUserIsPrivate, currentUserId) {
   await setDoc(doc(db, "users", followUserId, "followers", currentUserId), {
@@ -25,6 +30,12 @@ export async function follow(followUserId, followUserIsPrivate, currentUserId) {
     createdAt: Date.now().toString(),
     updatedAt: Date.now().toString(),
   });
+
+  if (followUserIsPrivate) {
+    requestFollowNotification(followUserId, currentUserId);
+  } else {
+    followingNotification(followUserId, currentUserId);
+  }
 }
 
 export async function unfollow(followUserId, currentUserId) {
@@ -32,6 +43,15 @@ export async function unfollow(followUserId, currentUserId) {
   await deleteDoc(doc(db, "users", currentUserId, "following", followUserId));
   //delete followers current user on user
   await deleteDoc(doc(db, "users", followUserId, "followers", currentUserId));
+}
+
+export async function acceptRequestFollowing(followUserId, currentUserId) {
+  await updateDoc(doc(db, "users", currentUserId, "followers", followUserId), {
+    isConfirm: true,
+  });
+  await updateDoc(doc(db, "users", followUserId, "following", currentUserId), {
+    isConfirm: true,
+  });
 }
 
 export async function checkIsFollowed(followUserId, currentUserId) {
@@ -42,9 +62,26 @@ export async function checkIsFollowed(followUserId, currentUserId) {
     )
   );
 
-  return followingSnap.docs.map((snapshot) => snapshot.data()).length > 0
-    ? true
-    : false;
+  return followingSnap?.docs?.map((snapshot) => snapshot.data())?.length > 0;
+}
+
+export async function checkIsConfirm(followUserId, currentUserId) {
+  const followingSnap = await getDocs(
+    query(
+      collection(db, "users", currentUserId, "following"),
+      where("user", "==", doc(db, "users", followUserId))
+    )
+  );
+
+  const followingList = followingSnap?.docs?.map((snapshot) =>
+    snapshot?.data()
+  );
+
+  if (followingList?.length > 0) {
+    return followingList[0]?.isConfirm;
+  } else {
+    return false;
+  }
 }
 
 export async function getFollowingCount(userId) {

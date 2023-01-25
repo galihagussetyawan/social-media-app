@@ -11,7 +11,8 @@
     EditProfile,
     Setting,
     ImageViewer,
-    FollowingFollowers;
+    FollowingFollowers,
+    Notification;
 
   import("./pages/home.pages.svelte").then((result) => (Home = result.default));
   import("./pages/search.page.svelte").then(
@@ -38,6 +39,9 @@
   import("./pages/following-followers-list.page.svelte").then(
     (res) => (FollowingFollowers = res.default)
   );
+  import("./pages/notification.pages.svelte").then(
+    (res) => (Notification = res.default)
+  );
 </script>
 
 <Router>
@@ -59,6 +63,9 @@
   </svelte:component>
   <svelte:component this={ProtectedRoute} path={"/profile/settings"}>
     <svelte:component this={Setting} />
+  </svelte:component>
+  <svelte:component this={ProtectedRoute} path={"/profile/notifications"}>
+    <svelte:component this={Notification} />
   </svelte:component>
 
   <svelte:component this={ProtectedRoute} path={"/profile/following"}>
