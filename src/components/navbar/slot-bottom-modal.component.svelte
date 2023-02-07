@@ -3,6 +3,13 @@
   import BottomModal from "../bottom-modal.component.svelte";
   import { currentUser } from "../../stores/auth.store";
   import { handleLogout } from "../../services/auth.service";
+  import { onMount } from "svelte";
+  import { getCountNotification } from "../../services/notification.service";
+  import { notificationCount } from "../../stores/global.store";
+
+  onMount(async () => {
+    notificationCount.set(await getCountNotification($currentUser?.uid));
+  });
 </script>
 
 <svelte:component this={BottomModal}>
@@ -70,7 +77,14 @@
             />
           </svg>
         </i>
-        <span>Notifications</span>
+        {#if Number($notificationCount) > 0}
+          <span class="inline-flex items-center gap-3"
+            >Notifications
+            <div class="w-5 h-5 aspect-square rounded-full bg-red-500" />
+          </span>
+        {:else}
+          <span>Notifications</span>
+        {/if}
       </Link>
       <Link
         to={"/profile/settings"}

@@ -8,6 +8,7 @@
   import { getDistance } from "geolib";
   import { currentUser } from "../stores/auth.store";
   import { navigate } from "svelte-navigator";
+  import { giveExpressionFeedNotification } from "../services/notification.service";
 
   export let data;
 
@@ -36,7 +37,22 @@
           };
           data.count.reaction = data?.count?.reaction + 1;
         });
+        handleSendNotification(symbol);
       }
+    }
+  }
+
+  //prevent send notification if creator feed
+  function handleSendNotification(symbol) {
+    if (data?.user?.id === $currentUser?.uid) {
+      return;
+    } else {
+      giveExpressionFeedNotification(
+        data?.user?.id,
+        $currentUser?.uid,
+        data?.id,
+        symbol
+      );
     }
   }
 </script>

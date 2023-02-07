@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   doc,
+  getCountFromServer,
   getDoc,
   getDocs,
   query,
@@ -25,16 +26,24 @@ export async function getNotificationsByUserId(userId) {
 
       return {
         id: docSnap?.id,
-        type: docSnap?.data()?.type,
-        from: {
-          id: userSnap?.id,
+        fromUserData: {
           ...userSnap?.data(),
         },
-        isRead: docSnap?.data()?.isRead,
-        createdAt: userSnap?.data()?.createdAt,
+        ...docSnap?.data(),
       };
     })
   );
+}
+
+export async function getCountNotification(currentUserId) {
+  const snapCount = await getCountFromServer(
+    query(
+      collection(db, "users", currentUserId, "notifications"),
+      where("isRead", "==", false)
+    )
+  );
+
+  return snapCount?.data()?.count;
 }
 
 //POST NOTIFICATIONS
@@ -59,12 +68,14 @@ export async function requestFollowNotification(toUserId, fromUserId) {
 export async function giveExpressionFeedNotification(
   toUserId,
   fromUserId,
-  feedId
+  feedId,
+  symbol
 ) {
   await addDoc(collection(db, "users", toUserId, "notifications"), {
     type: "expression",
     from: fromUserId,
     feedId: feedId,
+    symbol: symbol,
     isRead: false,
     createdAt: Date.now().toString(),
   });

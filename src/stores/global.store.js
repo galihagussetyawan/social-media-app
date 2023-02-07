@@ -9,3 +9,4 @@ export const cameraState = writable({
   isPermission: false,
 });
 export const images = writable();
+export const notificationCount = writable();
