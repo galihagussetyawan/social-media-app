@@ -2,6 +2,8 @@
   import { currentUser } from "../../stores/auth.store";
   import { acceptRequestFollowing } from "../../services/follow-unfollow.service";
   import { readNotification } from "../../services/notification.service";
+  import { notificationList } from "../../stores/global.store";
+  import { Link } from "svelte-navigator";
 
   export let data;
   const emoticonList = ["😎", "😬", "👽", "😺", "😘", "🤡", "🤗"];
@@ -13,19 +15,28 @@
   function handleAcceptRequestFollowing() {
     acceptRequestFollowing(data?.from?.id, $currentUser?.uid);
     handleReadNotification();
-    data = null;
+    removeDataById();
+  }
+
+  function handleViewProfile() {
+    handleReadNotification();
+    removeDataById();
+  }
+
+  function removeDataById() {
+    notificationList.set(
+      $notificationList?.filter((notification) => notification?.id !== data?.id)
+    );
   }
 </script>
 
 {#if data?.type === "request follow"}
   <li class="flex justify-between items-center gap-3 p-3 bg-white">
-    <button on:click={handleReadNotification}>
-      <p>
-        <span class="capitalize font-semibold"
-          >{data?.fromUserData?.displayName}</span
-        > meminta persetujuan untuk mengikuti anda
-      </p>
-    </button>
+    <p on:click={handleReadNotification}>
+      <span class="capitalize font-semibold"
+        >{data?.fromUserData?.displayName}</span
+      > meminta persetujuan untuk mengikuti anda
+    </p>
     <button
       class="h-10 px-5 rounded-2xl text-white bg-[#01DC14]"
       on:click={handleAcceptRequestFollowing}>Accept</button
@@ -35,13 +46,11 @@
 
 {#if data?.type === "following"}
   <li class="flex justify-between items-center gap-3 p-3 bg-white">
-    <button on:click={handleReadNotification}>
-      <p>
-        <span class="capitalize font-semibold"
-          >{data?.fromUserData?.displayName}</span
-        > telah mengikuti anda
-      </p>
-    </button>
+    <p on:click={handleReadNotification}>
+      <span class="capitalize font-semibold"
+        >{data?.fromUserData?.displayName}</span
+      > telah mengikuti anda
+    </p>
     <button class="w-28 h-10 rounded-2xl text-white bg-[#01DC14]"
       >Ikuti Balik</button
     >
@@ -50,17 +59,18 @@
 
 {#if data?.type === "expression"}
   <li class="flex justify-between items-center gap-3 p-3 bg-white">
-    <button>
-      <p>
-        <span class="capitalize font-semibold"
-          >{data?.fromUserData?.displayName}</span
-        >
-        memberikan ekspresi
-        <span>{emoticonList[Number(data?.symbol) + 1]}</span> pada status anda
-      </p>
-    </button>
-    <button class="w-48 h-10 rounded-2xl text-white bg-[#01DC14]"
-      >Lihat Profile</button
-    >
+    <p>
+      <span class="capitalize font-semibold"
+        >{data?.fromUserData?.displayName}</span
+      >
+      memberikan ekspresi
+      <span>{emoticonList[Number(data?.symbol) + 1]}</span> pada status anda
+    </p>
+    <Link
+      to={"/" + data?.fromUserData?.username}
+      class="w-48 h-10 flex justify-center items-center rounded-2xl text-white bg-[#01DC14]"
+      on:click={handleViewProfile}
+      >Lihat Profile
+    </Link>
   </li>
 {/if}

@@ -1,7 +1,7 @@
 <script defer>
   import { onMount } from "svelte";
   import { getNotificationsByUserId } from "../services/notification.service";
-  import { pathname } from "../stores/global.store";
+  import { pathname, notificationList } from "../stores/global.store";
   import { currentUser } from "../stores/auth.store";
 
   let MainLayout, CircleSpinner, NotificationCard;
@@ -17,13 +17,12 @@
     (res) => (NotificationCard = res.default)
   );
 
-  let notificationList;
   let isLoading = false;
 
   onMount(async () => {
     isLoading = true;
-    notificationList = await getNotificationsByUserId($currentUser?.uid);
-    // notificationList = [
+    notificationList.set(await getNotificationsByUserId($currentUser?.uid));
+    // notificationList.set([
     //   {
     //     type: "following",
     //     from: {
@@ -36,7 +35,13 @@
     //       displayName: "Galih",
     //     },
     //   },
-    // ];
+    //   {
+    //     type: "expression",
+    //     from: {
+    //       displayName: "Galih",
+    //     },
+    //   },
+    // ]);
     isLoading = false;
   });
 </script>
@@ -44,9 +49,9 @@
 <svelte:component this={MainLayout}>
   {#if isLoading}
     <svelte:component this={CircleSpinner} />
-  {:else if notificationList?.length > 0}
+  {:else if $notificationList?.length > 0}
     <ul class=" rounded-2xl divide-y mx-5 overflow-hidden">
-      {#each notificationList as data}
+      {#each $notificationList as data}
         {#if !data?.isRead}
           <svelte:component this={NotificationCard} bind:data />
         {/if}
