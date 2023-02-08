@@ -8,7 +8,9 @@
   import { notificationCount } from "../../stores/global.store";
 
   onMount(async () => {
-    notificationCount.set(await getCountNotification($currentUser?.uid));
+    if ($currentUser?.uid) {
+      notificationCount.set(await getCountNotification($currentUser?.uid));
+    }
   });
 </script>
 
