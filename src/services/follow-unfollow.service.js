@@ -54,6 +54,11 @@ export async function acceptRequestFollowing(followUserId, currentUserId) {
   });
 }
 
+export async function rejectRequestFollowing(followUserId, currentUserId) {
+  await deleteDoc(doc(db, "users", currentUserId, "followers", followUserId));
+  await deleteDoc(doc(db, "users", followUserId, "following", currentUserId));
+}
+
 export async function checkIsFollowed(followUserId, currentUserId) {
   const followingSnap = await getDocs(
     query(

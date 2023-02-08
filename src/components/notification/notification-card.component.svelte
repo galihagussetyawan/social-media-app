@@ -1,6 +1,9 @@
 <script defer>
   import { currentUser } from "../../stores/auth.store";
-  import { acceptRequestFollowing } from "../../services/follow-unfollow.service";
+  import {
+    acceptRequestFollowing,
+    rejectRequestFollowing,
+  } from "../../services/follow-unfollow.service";
   import { readNotification } from "../../services/notification.service";
   import { notificationList } from "../../stores/global.store";
   import { Link } from "svelte-navigator";
@@ -13,7 +16,13 @@
   }
 
   function handleAcceptRequestFollowing() {
-    acceptRequestFollowing(data?.from?.id, $currentUser?.uid);
+    acceptRequestFollowing(data?.from, $currentUser?.uid);
+    handleReadNotification();
+    removeDataById();
+  }
+
+  function handleRejectRequest() {
+    rejectRequestFollowing(data?.from, $currentUser?.uid);
     handleReadNotification();
     removeDataById();
   }
@@ -37,10 +46,16 @@
         >{data?.fromUserData?.displayName}</span
       > meminta persetujuan untuk mengikuti anda
     </p>
-    <button
-      class="h-10 px-5 rounded-2xl text-white bg-[#01DC14]"
-      on:click={handleAcceptRequestFollowing}>Accept</button
-    >
+    <div class="flex gap-2">
+      <button
+        class="h-10 px-5 rounded-2xl text-gray-600 bg-gray-200"
+        on:click={handleRejectRequest}>Reject</button
+      >
+      <button
+        class="h-10 px-5 rounded-2xl text-white bg-[#01DC14]"
+        on:click={handleAcceptRequestFollowing}>Accept</button
+      >
+    </div>
   </li>
 {/if}
 
