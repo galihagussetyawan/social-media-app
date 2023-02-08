@@ -2,6 +2,7 @@
   import { currentUser } from "../../stores/auth.store";
   import {
     acceptRequestFollowing,
+    follow,
     rejectRequestFollowing,
   } from "../../services/follow-unfollow.service";
   import { readNotification } from "../../services/notification.service";
@@ -28,6 +29,12 @@
   }
 
   function handleViewProfile() {
+    handleReadNotification();
+    removeDataById();
+  }
+
+  function handleFollowBack() {
+    follow(data?.from, data.fromUserData?.isPrivate, $currentUser?.uid);
     handleReadNotification();
     removeDataById();
   }
@@ -66,8 +73,9 @@
         >{data?.fromUserData?.displayName}</span
       > telah mengikuti anda
     </p>
-    <button class="w-28 h-10 rounded-2xl text-white bg-[#01DC14]"
-      >Ikuti Balik</button
+    <button
+      class="w-28 h-10 rounded-2xl text-white bg-[#01DC14]"
+      on:click={handleFollowBack}>Ikuti Balik</button
     >
   </li>
 {/if}
