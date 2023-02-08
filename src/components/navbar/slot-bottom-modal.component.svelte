@@ -78,9 +78,9 @@
           </svg>
         </i>
         {#if Number($notificationCount) > 0}
-          <span class="inline-flex items-center gap-3"
+          <span class="inline-flex gap-1"
             >Notifications
-            <div class="w-5 h-5 aspect-square rounded-full bg-red-500" />
+            <div class="w-4 h-4 aspect-square rounded-full bg-red-500" />
           </span>
         {:else}
           <span>Notifications</span>
